@@ -8,7 +8,6 @@ public class Main {
     static int[] tmp;
     static int cnt = 0;
     static int K;
-    static int result = -1;
 
     public static void main(String[] args) throws Exception {
 
@@ -26,7 +25,7 @@ public class Main {
 
         mergeSort(A, 0, N - 1);
 
-        System.out.println(result);
+        if (K > cnt) System.out.println(-1);
     }
 
     // A[p..r]을 오름차순 정렬
@@ -70,7 +69,7 @@ public class Main {
         while (i <= r) {
             cnt++;
             if (cnt == K){
-                result = tmp[t];
+                System.out.println(tmp[t]);
                 break;
             }
             A[i++] = tmp[t++];
