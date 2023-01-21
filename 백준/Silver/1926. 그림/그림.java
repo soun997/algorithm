@@ -17,8 +17,8 @@ class Pair {
 
 public class Main {
 
-    static int[][] board;
-    static boolean[][] visited;
+    static int[][] board = new int[502][502];
+    static boolean[][] visited = new boolean[502][502];
     static int n;
     static int m;
     static int[] dx = { 1, 0, -1, 0 };
@@ -30,8 +30,6 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        board = new int[n][m];
-        visited = new boolean[n][m];
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
@@ -48,6 +46,7 @@ public class Main {
             for (int j = 0; j < m; j++) {
                 if (visited[i][j] || board[i][j] == 0) continue;
                 q.add(new Pair(i, j));
+                visited[i][j] = true;
                 max = Math.max(max, bfs(q));
                 count++;
             }
@@ -59,6 +58,7 @@ public class Main {
     static int bfs(Queue<Pair> q) {
         int area = 0;
         while(!q.isEmpty()){
+            area++;
             Pair cur = q.poll();
             // 사방 탐색
             for (int i = 0; i < 4; i++){
@@ -70,10 +70,8 @@ public class Main {
                 if (visited[nx][ny] || board[nx][ny] == 0) continue;
                 visited[nx][ny] = true;
                 q.add(new Pair(nx, ny));
-                area++;
             }
         }
-        if (area == 0) return 1;
         return area;
     }
 }
