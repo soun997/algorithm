@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
@@ -5,13 +7,13 @@ public class Main {
     static int[][] matrix;
     static int n;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
         matrix = new int[n][n];
 
-        StringBuilder sb = new StringBuilder();    // System.out.print()로 풀면 시간 초과가 남
+        StringBuilder sb = new StringBuilder();
 
         recursion(0, 0, n);
         for (int i = 0; i < n; i++){
@@ -29,23 +31,14 @@ public class Main {
 
     static void recursion(int a, int b, int n){
 
-        if (n == 3) {
+        for (int i = a; i < a + n; i += n / 3){
 
-            for (int i = a; i < a + 3; i++){
-
-                for (int j = b; j < b + 3; j++){
-                    if (i == a + 1 && j == b + 1) continue;
+            for (int j = b; j < b + n; j += n / 3){
+                if (i == a + n / 3 && j == b + n / 3) continue;
+                if (n == 3)
                     matrix[i][j] = 1;
-                }
-            }
-        }
-        else{
-            for (int i = a; i < a + n; i += n / 3){
-
-                for (int j = b; j < b + n; j += n / 3){
-                    if (i == a + n / 3 && j == b + n / 3) continue;
-                    recursion(i, j, n/3);
-                }
+                else
+                    recursion(i, j, n / 3);
             }
         }
     }
