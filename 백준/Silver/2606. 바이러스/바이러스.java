@@ -3,7 +3,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -31,18 +30,20 @@ public class Main {
 		int head = 1;
 		Queue<Integer> q = new LinkedList<>();
 		q.add(head);
-		Set<Integer> infected = new HashSet<>();
+		boolean[] infected = new boolean[n+1];
+		infected[1] = true;
+		int cnt = 0;
 		while (!q.isEmpty()) {
 			head = q.poll();
 			for (int i = 0; i < list.get(head).size(); i++) {
 				int computer = list.get(head).get(i);
-				q.add(computer);
-				if (computer != 1) {
-					infected.add(list.get(head).get(i));
+				if (!infected[computer]) {
+					q.add(computer);
+					infected[computer] = true;
+					cnt++;
 				}
 			}
-			list.get(head).clear();
 		}
-		System.out.println(infected.size());
+		System.out.println(cnt);
 	}
 }
