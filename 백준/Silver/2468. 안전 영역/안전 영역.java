@@ -30,6 +30,7 @@ public class Main {
 
         int result = Integer.MIN_VALUE;
         int cnt;
+        // 왜 min - 1이어야 하는 걸까? ->
         for (int k = min - 1; k < max + 1; k++) {
             cnt = 0;
             check = new boolean[n][n];
