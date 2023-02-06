@@ -17,13 +17,13 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         area = new int[n][n];
-        int min = Integer.MAX_VALUE;
+        //int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
                 area[i][j] = Integer.parseInt(st.nextToken());
-                min = Math.min(min, area[i][j]);
+                //min = Math.min(min, area[i][j]);
                 max = Math.max(max, area[i][j]);
             }
         }
@@ -31,7 +31,7 @@ public class Main {
         int result = Integer.MIN_VALUE;
         int cnt;
         // 왜 min - 1이어야 하는 걸까? ->
-        for (int k = min - 1; k < max + 1; k++) {
+        for (int k = 0; k < max + 1; k++) {
             cnt = 0;
             check = new boolean[n][n];
             for (int i = 0; i < n; i++) {
