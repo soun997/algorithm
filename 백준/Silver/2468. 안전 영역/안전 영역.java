@@ -30,7 +30,7 @@ public class Main {
 
         int result = Integer.MIN_VALUE;
         int cnt;
-        for (int k = 0; k < max + 1; k++) {
+        for (int k = min - 1; k < max + 1; k++) {
             cnt = 0;
             check = new boolean[n][n];
             for (int i = 0; i < n; i++) {
