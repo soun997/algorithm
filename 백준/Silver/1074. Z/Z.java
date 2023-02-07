@@ -18,10 +18,10 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         r = Integer.parseInt(st.nextToken());
         c = Integer.parseInt(st.nextToken());
-        visit(0, 0, 1 << n);
+        visit(0, 0, 1 << n, 0);
     }
 
-    static void visit(int x, int y, int n) {
+    static void visit(int x, int y, int n, int result) {
         if (n == 1) {
             if (x == r && y == c){
                 System.out.println(result);
@@ -33,19 +33,16 @@ public class Main {
             // 재귀를 다 돌 필요가 없으니, 어떤 상황에서 돌아야 할까?
             // (0, 0) -> (n/2, n/2)
             if (r >= x && r < x + n / 2 && c >= y && c < y + n / 2){
-                visit(x, y, n / 2);
+                visit(x, y, n / 2, result);
             }
-            result += n / 2 * n / 2;
             if (r >= x && r < x + n / 2 && c >= y + n / 2 && c < y + n){
-                visit(x, y + n / 2, n / 2);
+                visit(x, y + n / 2, n / 2, result += n / 2 * n / 2 * 1);
             }
-            result += n / 2 * n / 2;
             if (r >= x + n / 2 && r < x + n && c >= y && c < y + n / 2){
-                visit(x + n / 2, y, n / 2);
+                visit(x + n / 2, y, n / 2, result += n / 2 * n / 2 * 2);
             }
-            result += n / 2 * n / 2;
             if (r >= x + n / 2 && r < x + n && c >= y + n / 2 && c < y + n){
-                visit(x + n / 2, y + n / 2, n / 2);
+                visit(x + n / 2, y + n / 2, n / 2, result += n / 2 * n / 2 * 3);
             }
         }
     }
