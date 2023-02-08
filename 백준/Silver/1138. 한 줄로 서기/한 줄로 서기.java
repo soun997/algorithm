@@ -1,46 +1,30 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 public class Main {
 
-    public static void main(String[] args) throws Exception {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] inputs = new int[n];
-        int[] result = new int[n];
-        boolean[] check = new boolean[n];
+public static void main(String[] args) throws Exception{
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	int N = Integer.parseInt(br.readLine());
+	int [] remember = new int[N];
+	ArrayList <Integer> result = new ArrayList<>();
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            inputs[i] = Integer.parseInt(st.nextToken());
-            result[i] = 1;
-        }
-        for (int i = 0; i < n - 1; i++) {
-            int cnt = inputs[i];
-            for (int j = 0; j < n; j++) {
-                if (cnt== 0) {
-                    for (int k = j; k < n; k++) {
-                        if (!check[k]) {
-                            check[k] = true;
-                            break;
-                        }
-                    }
-                    for (int k = j + 1; k < n; k++) {
-                        if (!check[k]) {
-                            result[k]++;
-                        }
-                    }
-                    break;
-                }
-                if (!check[j]) {
-                    result[j]++;
-                    cnt--;
-                }
-            }
-        }
-        for (int i : result)
-            System.out.print(i + " ");
-    }
+	StringTokenizer st = new StringTokenizer(br.readLine());
+	for (int i = 0; i < N; i++) {
+		remember[i] = Integer.parseInt(st.nextToken());
+	}
+
+    //뒤에서부터 i인덱스에 값 추가
+	for (int i = N-1; i >= 0; i--) {
+		result.add(remember[i],i);
+
+	}
+	for (Integer i : result) {
+		System.out.print((i+1)+" ");
+	}
 }
+
+}
+
