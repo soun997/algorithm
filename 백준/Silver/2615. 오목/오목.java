@@ -2,23 +2,25 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Pair {
-
-    public int x;
-    public int y;
-
-    public Pair(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-}
 
 public class Main {
+	
+	static class Pair {
+
+	    public int x;
+	    public int y;
+
+	    public Pair(int x, int y){
+	        this.x = x;
+	        this.y = y;
+	    }
+	}
 
     static int[][] board = new int[20][20];
     static int[] dx = {-1, 0, 1, 1, -1, -1, 0, 1};
     static int[] dy = {0, 1, -1, 1, -1, 1, -1, 0};
     static Pair[] omok = new Pair[5];
+    static int cnt = 1;
 
     public static void main(String[] args) throws Exception {
 
@@ -33,7 +35,7 @@ public class Main {
         for (int i = 1; i < 20; i++) {
             for (int j = 1; j < 20; j++) {
                 if (board[i][j] == 0) continue;
-                omok[0] = new Pair(i, j);
+                
                 if (isOmok(i, j)){
                     System.out.println(board[i][j]);
                     Pair max = omok[0];
@@ -53,33 +55,29 @@ public class Main {
             System.out.println(0);
     }
 
-    static boolean isOmok(int x, int y){
+    static boolean isOmok(int x, int y) {
+    	
+    	omok[0] = new Pair(x, y);
         for (int i = 0; i < 4; i++) {
-            int cnt = 1;
-            int weight = 1;
-            while(true){
-                int nx = x + dx[i] * weight;
-                int ny = y + dy[i] * weight;
-                if (nx < 1 || nx >= 20 || ny < 1 || ny >= 20) break;
-                if (board[nx][ny] != board[x][y]) break;
-                cnt++;
-                if (cnt > 5) break;
-                omok[cnt-1] = new Pair(nx, ny);
-                weight++;
-            }
-            weight = 1;
-            while(true){
-                int nx = x + dx[7 - i] * weight;
-                int ny = y + dy[7 - i] * weight;
-                if (nx < 1 || nx >= 20 || ny < 1 || ny >= 20) break;
-                if (board[nx][ny] != board[x][y]) break;
-                cnt++;
-                if (cnt > 5) break;
-                omok[cnt-1] = new Pair(nx, ny);
-                weight++;
-            }
+            cnt = 1;        
+            getStones(x, y, i);
+            getStones(x, y, 7 - i);
             if (cnt == 5) return true;
         }
         return false;
+    }
+    
+    static void getStones(int x, int y, int d) {
+    	int weight = 1;
+    	while(true){
+            int nx = x + dx[d] * weight;
+            int ny = y + dy[d] * weight;
+            if (nx < 1 || nx >= 20 || ny < 1 || ny >= 20) break;
+            if (board[nx][ny] != board[x][y]) break;
+            cnt++;
+            if (cnt > 5) break;
+            omok[cnt-1] = new Pair(nx, ny);
+            weight++;
+        }
     }
 }
