@@ -4,7 +4,9 @@ import java.io.InputStreamReader;
 public class Solution {
 
     static int n;
-    static int[][] arr;
+    static int[][] snail;
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
     static int cnt;
 
     public static void main(String[] args) throws Exception {
@@ -15,71 +17,39 @@ public class Solution {
 
         for (int t = 0; t < cases; t++) {
             n = Integer.parseInt(br.readLine());
-            arr = new int[n][n];
-            cnt = 1;
-            spin(0, 0, 1);
+            snail = new int[n][n];
 
+            int r = 0;
+            int c = 0;
+            int d = 0;
+            for (int i = 0; i < n; i++) {
+            	for (int j = 0; j < n; j++){
+            		snail[r][c] = i * n + j + 1;
+            		// 바깥으로 나가거나 이미 방문한 곳이라면
+            		if (!(check(r + dx[d], c + dy[d]) 
+            				&& snail[r + dx[d]][c + dy[d]] == 0)) {
+            			d = (d + 1) % 4;
+            		}
+            		
+            		r = r + dx[d];
+            		c = c + dy[d];
+            	}
+            }
             sb.append("#").append(t + 1).append("\n");
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    sb.append(arr[i][j]).append(" ");
-                }
-                sb.append("\n");
+            	for (int j = 0; j < n; j++) {
+            		sb.append(snail[i][j]).append(" ");
+            	}
+            	sb.append("\n");
             }
+            
         }
         System.out.println(sb);
     }
 
-    static void spin(int nx, int ny, int caseNum){
-        if (cnt == n * n + 1)
-            return;
-
-        int loop = 0;
-        switch(caseNum){
-            case 1:
-                for (int i = ny; i < n; i++){
-                    loop = i;
-                    if (arr[nx][i] != 0){
-                        loop--;
-                        break;
-                    }
-                    arr[nx][i] = cnt++;
-                }
-                spin(nx + 1, loop, 2);
-                break;
-            case 2:
-                for (int i = nx; i < n; i++){
-                    loop = i;
-                    if (arr[i][ny] != 0){
-                        loop--;
-                        break;
-                    }
-                    arr[i][ny] = cnt++;
-                }
-                spin(loop, ny - 1, 3);
-                break;
-            case 3:
-                for (int i = ny; i >= 0; i--){
-                    loop = i;
-                    if (arr[nx][i] != 0) {
-                        loop++;
-                        break;
-                    }
-                    arr[nx][i] = cnt++;
-                }
-                spin(nx - 1, loop, 4);
-                break;
-            case 4:
-                for (int i = nx; i >= 0; i--){
-                    loop = i;
-                    if (arr[i][ny] != 0){
-                        loop++;
-                        break;
-                    }
-                    arr[i][ny] = cnt++;
-                }
-                spin(loop, ny + 1, 1);
-                break;
-        }
-    }
+	static boolean check(int nx, int ny) {
+		if (nx < 0 || nx >= n || ny < 0 || ny >= n)
+			return false;
+		return true;
+	}
 }
