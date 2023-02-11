@@ -53,12 +53,6 @@ public class Main {
             prev = cur;
             cnt++;
         }
-/*        for (Meeting cur : timetable){
-            if (cur.start < prev.end) continue;
-            prev = cur;
-            System.out.println(prev.start + " " + prev.end);
-            cnt++;
-        }*/
 
         System.out.println(cnt);
     }
