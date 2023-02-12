@@ -46,9 +46,9 @@ public class Main {
         PriorityQueue<Long> timetables = new PriorityQueue<>();
         timetables.offer(lectures.poll().end);
         while(!lectures.isEmpty()) {
-            Long prev = timetables.peek();
+            long end = timetables.peek();
             Lecture cur = lectures.poll();
-            if (prev <= cur.start){
+            if (end <= cur.start){
                 timetables.poll();
             }
             timetables.offer(cur.end);
