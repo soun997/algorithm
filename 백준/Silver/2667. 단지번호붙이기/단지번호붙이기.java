@@ -25,11 +25,10 @@ public class Main {
             }
         }
 
-
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (visited[i][j] || map[i][j] == 0) continue;
-                result.add(bfs(i, j));
+                if (map[i][j] == 0 || visited[i][j]) continue;
+                result.add(dfs(i, j) + 1);
             }
         }
         Collections.sort(result);
@@ -42,25 +41,17 @@ public class Main {
         System.out.println(sb);
     }
 
-    static int bfs(int x, int y){
-
-
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{x, y});
+    static int dfs(int x, int y){
         visited[x][y] = true;
         int cnt = 0;
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            cnt++;
-            for (int i = 0; i < 4; i++) {
-                int nx = cur[0] + dx[i];
-                int ny = cur[1] + dy[i];
-                if (!valid(nx, ny)) continue;
-                if (visited[nx][ny] || map[nx][ny] == 0) continue;
-                visited[nx][ny] = true;
-                q.offer(new int[]{nx, ny});
-            }
+        for (int d = 0; d < 4; d++) {
+            int nx = x + dx[d];
+            int ny = y + dy[d];
+            if (!valid(nx, ny)) continue;
+            if (visited[nx][ny] || map[nx][ny] == 0) continue;
+            cnt += dfs(nx, ny) + 1;
         }
+
         return cnt;
     }
 
