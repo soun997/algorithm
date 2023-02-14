@@ -9,6 +9,7 @@ public class Main {
     static int m;
     static int[] nums;
     static boolean [] visited;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws Exception {
 
@@ -23,14 +24,15 @@ public class Main {
             p[i] = i + 1;
         }
         combi(0, 0);
+        System.out.println(sb);
     }
 
     static void combi(int cnt, int start) {
         if(cnt == m) {
             for (int i = 0; i < m; i++) {
-                System.out.printf(nums[i]+" ");
+                sb.append(nums[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
         for (int i = start; i < n; i++) {
