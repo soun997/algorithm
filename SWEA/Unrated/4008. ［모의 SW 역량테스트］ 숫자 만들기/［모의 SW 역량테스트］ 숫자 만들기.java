@@ -35,15 +35,14 @@ public class Solution {
                 nums[i] = Integer.parseInt(st.nextToken());
             }
 
-            dfs(1, nums[0], operator[0], operator[1], operator[2], operator[3]);
+            dfs(1, nums[0]);
             sb.append("#").append(t + 1).append(" ").append(max - min).append("\n");
         }
 
         System.out.println(sb);
     }
 
-    static void dfs(int idx, int result,
-                    int sum, int sub, int mul, int div){
+    static void dfs(int idx, int result){
 
         if (idx == n){
             max = Math.max(max, result);
@@ -51,25 +50,29 @@ public class Solution {
             return;
         }
 
-        if (sum > 0){
+        if (operator[0] > 0){
             // 덧셈
-            dfs(idx + 1, result + nums[idx],
-                    sum - 1, sub, mul, div);
+            operator[0]--;
+            dfs(idx + 1, result + nums[idx]);
+            operator[0]++;
         }
-        if (sub > 0) {
+        if (operator[1] > 0) {
             // 뺄셈
-            dfs(idx + 1, result - nums[idx],
-                    sum, sub - 1, mul, div);
+            operator[1]--;
+            dfs(idx + 1, result - nums[idx]);
+            operator[1]++;
         }
-        if (mul > 0) {
+        if (operator[2] > 0) {
             // 곱셈
-            dfs(idx + 1, result * nums[idx],
-                    sum, sub, mul - 1, div);
+            operator[2]--;
+            dfs(idx + 1, result * nums[idx]);
+            operator[2]++;
         }
-        if (div > 0) {
+        if (operator[3] > 0) {
             // 나눗셈
-            dfs(idx + 1, result / nums[idx],
-                    sum, sub, mul, div - 1);
+            operator[3]--;
+            dfs(idx + 1, result / nums[idx]);
+            operator[3]++;
         }
     }
 }
