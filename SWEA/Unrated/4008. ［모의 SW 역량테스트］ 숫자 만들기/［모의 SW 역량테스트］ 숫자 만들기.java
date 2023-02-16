@@ -50,29 +50,27 @@ public class Solution {
             return;
         }
 
-        if (operator[0] > 0){
-            // 덧셈
-            operator[0]--;
-            dfs(idx + 1, result + nums[idx]);
-            operator[0]++;
+        for (int i = 0; i < 4; i++) {
+            if (operator[i] > 0){
+                operator[i]--;
+                dfs(idx + 1, calc(result, nums[idx], i));
+                operator[i]++;
+            }
         }
-        if (operator[1] > 0) {
-            // 뺄셈
-            operator[1]--;
-            dfs(idx + 1, result - nums[idx]);
-            operator[1]++;
+
+    }
+
+    static int calc(int a, int b, int op){
+        switch(op){
+            case 0:
+                return a + b;
+            case 1:
+                return a - b;
+            case 2:
+                return a * b;
+            case 3:
+                return a / b;
         }
-        if (operator[2] > 0) {
-            // 곱셈
-            operator[2]--;
-            dfs(idx + 1, result * nums[idx]);
-            operator[2]++;
-        }
-        if (operator[3] > 0) {
-            // 나눗셈
-            operator[3]--;
-            dfs(idx + 1, result / nums[idx]);
-            operator[3]++;
-        }
+        return 0;
     }
 }
