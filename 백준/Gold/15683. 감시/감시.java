@@ -21,14 +21,10 @@ public class Main {
         }
 
         public void supervise(int dir){
-            int[] dx;
-            int[] dy;
             int nx = x;
             int ny = y;
             switch(type){
                 case 1:
-                     dx = new int[]{-1, 0, 1, 0};
-                     dy = new int[]{0, -1, 0, 1};
                     while(true){
                         nx = nx + dx[dir];
                         ny = ny + dy[dir];
@@ -42,8 +38,6 @@ public class Main {
                     }
                     break;
                 case 2:
-                    dx = new int[]{-1, 0, 1, 0};
-                    dy = new int[]{0, -1, 0, 1};
                     for (int i = 0; i < 2; i++){
                         nx = x;
                         ny = y;
@@ -61,8 +55,6 @@ public class Main {
                     }
                     break;
                 case 3:
-                    dx = new int[]{-1, 0, 1, 0};
-                    dy = new int[]{0, 1, 0, -1};
                     for (int i = 0; i < 2; i++){
                         nx = x;
                         ny = y;
@@ -80,8 +72,6 @@ public class Main {
                     }
                     break;
                 case 4:
-                    dx = new int[]{-1, 0, 1, 0};
-                    dy = new int[]{0, 1, 0, -1};
                     for (int i = 0; i < 3; i++){
                         nx = x;
                         ny = y;
@@ -99,8 +89,6 @@ public class Main {
                     }
                     break;
                 case 5:
-                    dx = new int[]{-1, 0, 1, 0};
-                    dy = new int[]{0, -1, 0, 1};
                     for (int i = 0; i < 4; i++){
                         nx = x;
                         ny = y;
@@ -132,6 +120,8 @@ public class Main {
     static int[][] map;
     static List<CCTV> cctvs;
     static int min;
+    static final int[] dx = new int[]{-1, 0, 1, 0};
+    static final int[] dy = new int[]{0, -1, 0, 1};
 
 
     public static void main(String[] args) throws IOException {
@@ -176,8 +166,8 @@ public class Main {
         }
 
         CCTV cctv = cctvs.get(idx);
+        int[][] copiedMap = copyMap();
         for (int d = 0; d < 4; d++) {
-            int[][] copiedMap = copyMap();
             cctv.supervise(d);
             dfs(idx + 1);
 
