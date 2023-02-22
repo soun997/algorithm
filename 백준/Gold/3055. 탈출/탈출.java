@@ -5,6 +5,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+class Pair {
+
+    public int x;
+    public int y;
+
+    public Pair(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
 
 public class Main {
 
@@ -50,21 +60,25 @@ public class Main {
     }
 
     static int escape(){
-        
+
+        int min = Integer.MAX_VALUE;
         while (!q1.isEmpty()) {
             Pair cur = q1.poll();
             for (int i = 0; i < 4; i++) {
                 int nx = cur.x + dx[i];
                 int ny = cur.y + dy[i];
                 if (nx < 0 || nx >= r || ny < 0 || ny >= c) continue;
-                if (map[nx][ny] == 'D') return dochi[cur.x][cur.y] + 1;
+                if (map[nx][ny] == 'D') {
+                    min = Math.min(min, dochi[cur.x][cur.y] + 1);
+                }
                 if (map[nx][ny] == 'X' || dochi[nx][ny] != -1) continue;
                 if (water[nx][ny] != -1 && dochi[cur.x][cur.y] + 1 >= water[nx][ny]) continue;
+                // if (map[nx][ny] == 'D') return dochi[cur.x][cur.y] + 1; 해당 코드가 여기 있을 때는 제대로 동작하지 않음!!
                 dochi[nx][ny] = dochi[cur.x][cur.y] + 1;
                 q1.offer(new Pair(nx, ny));
             }
         }
-        
+        if (min != Integer.MAX_VALUE) return min;
         return -1;
     }
 
@@ -80,17 +94,6 @@ public class Main {
                 water[nx][ny] = water[cur.x][cur.y] + 1;
                 q2.offer(new Pair(nx, ny));
             }
-        }
-    }
-
-    static class Pair {
-
-        public int x;
-        public int y;
-
-        public Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
         }
     }
 }
