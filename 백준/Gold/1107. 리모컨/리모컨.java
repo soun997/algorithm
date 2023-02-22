@@ -41,7 +41,7 @@ public class Main {
 
     static void find(String num) {
         for (String btn : buttons) {
-            String temp = num + btn;
+            String temp = new StringBuilder(num).append(btn).toString();
             min = Math.min(min, Math.abs(n - Integer.parseInt(temp)) + temp.length());
 
             if (temp.length() < 6) {
@@ -50,5 +50,3 @@ public class Main {
         }
     }
 }
-
-// [출처] https://blog.naver.com/occidere/221354997206
