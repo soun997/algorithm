@@ -38,14 +38,13 @@ public class Main {
         stk.push(new Pair(x, y, d, Arrays.copyOf(alphabets, 26)));
         while (!stk.empty()) {
             Pair cur = stk.pop();
-            alphabets = Arrays.copyOf(cur.status, 26);
             boolean movable = false;
             //System.out.println(board[cur.x][cur.y] + " " + cur.distance);
             for (int i = 0; i < 4; i++) {
                 int nx = cur.x + dx[i];
                 int ny = cur.y + dy[i];
                 if (nx < 0 || nx >= r || ny < 0 || ny >= c) continue;
-                if (alphabets[board[nx][ny] % 65] > 0) continue;
+                if (cur.status[board[nx][ny] % 65] > 0) continue;
                 movable = true;
                 int[] status = Arrays.copyOf(cur.status, 26);
                 status[board[nx][ny] % 65]++;
