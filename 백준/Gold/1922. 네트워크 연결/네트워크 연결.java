@@ -39,6 +39,7 @@ public class Main {
 			if (union(c.a, c.b)) {
 				//print();
 				//System.out.println(c.weight);
+				cnt++;
 				min += c.weight;
 				//System.out.println(min);
 			}			
@@ -52,11 +53,9 @@ public class Main {
 		if (px == py) return false;
 		if (rank[px] > rank[py]) {
 			p[py] = p[px];
-			cnt++;
 		}
 		else {
 			p[px] = p[py];
-			cnt++;
 			if (rank[px] == rank[py]) {
 				rank[py]++;
 			}
@@ -67,7 +66,7 @@ public class Main {
 	static int find(int x) {
 		if (x == p[x]) return x;
 		
-		return p[x] = find(p[x]);
+		return find(p[x]);
 	}
 
 	static void print() {
