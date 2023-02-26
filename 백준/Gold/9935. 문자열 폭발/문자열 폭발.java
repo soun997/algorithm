@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class Main {
@@ -12,7 +14,7 @@ public class Main {
         char[] explode = br.readLine().toCharArray();
 
         Stack<Character> origin = new Stack<>();
-        Stack<Integer> indexes = new Stack();
+        List<Integer> indexes = new ArrayList<>();
 
         int idx = 0;
         int cnt = 0;
@@ -27,7 +29,8 @@ public class Main {
                         origin.pop();
                     }
                     if (!indexes.isEmpty()){
-                        cnt = indexes.pop();
+                        cnt = indexes.get(indexes.size() - 1);
+                        indexes.remove(indexes.size() - 1);
                         continue;
                     }
                     cnt = 0;
@@ -36,14 +39,12 @@ public class Main {
             }
 
             if (origin.peek() == explode[0]){
-                indexes.push(cnt);
+                indexes.add(cnt);
                 cnt = 1;
                 continue;
             }
 
-            while(!indexes.isEmpty()){
-                indexes.pop();
-            }
+            indexes.clear();
             cnt = 0;
         }
 
