@@ -3,11 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static class Node {
+    // 우선순위 큐 사용을 위한 Comparable 인터페이스 구현
+    static class Node implements Comparable<Node> {
 
         int idx;    // 도착 정점
         int cost;   // 도착 정점으로 가는 비용
@@ -15,6 +17,13 @@ public class Main {
         public Node(int idx, int cost){
             this.idx = idx;
             this.cost = cost;
+        }
+
+
+        @Override
+        public int compareTo(Node other) {
+            // 비용이 작을 수록 높은 우선순위
+            return Integer.compare(this.cost, other.cost);
         }
     }
 
@@ -28,8 +37,8 @@ public class Main {
     static int start;   // 출발 지점
 
     static ArrayList<Node>[] graph; // 인접 리스트
-    static boolean[] visited;   // 노드 방문 여부 확인을 위한 재열
-    static int[] distance;      // 출발 노드부터 도착 노드까지의 최소 거리를 저장하기 위한 배열
+    static PriorityQueue<Node> pq = new PriorityQueue<>();
+    static int[] distance;      // 출발 정점부터 도착 정점까지의 최소 거리를 저장하기 위한 배열
 
     public static void main(String[] args) throws IOException {
 
@@ -42,16 +51,16 @@ public class Main {
 
         makeGraph();    // 그래프 생성
 
-        dijkstra();
+        dijkstra();     // 다익스트라 알고리즘 실행
 
-        printResult();
+        printResult();  // 출발 정점에서 각 정점으로 이동 시의 최소 비용 출력
 
         br.close();
     }
 
     // 그래프 초기화
     static void initGraph(){
-        graph = new ArrayList[V + 1];   // 노드의 idx는 1 ~ V + 1번까지
+        graph = new ArrayList[V + 1];   // 정점의 idx는 1 ~ V + 1번까지
         for (int i = 1; i < V + 1; i++) {
             graph[i] = new ArrayList<>();
         }
@@ -72,42 +81,33 @@ public class Main {
 
     static void dijkstra(){
 
-        visited = new boolean[V + 1];
         distance = new int[V + 1];
 
         // 최소 거리 정보를 담을 배열 초기화 -> 무한한 값으로
         Arrays.fill(distance, INFINITE);
         distance[start] = 0;    // 출발 지점은 0으로 초기화
 
+        // 시작 정점에서 시작 정점으로 가는 최소 비용은 0
+        pq.offer(new Node(start, 0));
+
         // 다익스트라 알고리즘
-        // 모든 정점을 방문했다면 종료 (정점의 개수만큼 반복)
-        for (int v = 1; v < V + 1; v++) {
+        while (!pq.isEmpty()) {
+            Node minNode = pq.poll();   // 우선순위 큐에서 poll한 노드 -> 현재 최소 비용을 갖는 정점
 
-            int minCost = INFINITE;
-            int minIdx = -1;
-
-            // 현재 정점에서의 거리 비용이 최소인 정점을 선택
-            for (int i = 1; i < V + 1; i++) {
-                if (!visited[i] && distance[i] < minCost){
-                    minCost = distance[i];
-                    minIdx = i;
-                }
+            // 해당 정점의 비용이 distance 배열에 저장된 값보다 크다면 고려할 필요없음
+            // 이 코드가 있어야 중복 방문을 막을 수 있음
+            if (distance[minNode.idx] < minNode.cost) {
+                continue;
             }
 
-            // 그래프가 끊어진 경우
-            if (minIdx == -1){
-                break;
-            }
+            // 선택된 정점의 모든 인접 정점들을 탐색
+            for (Node node : graph[minNode.idx]){
 
-            // 최종적으로 선택된 정점을 방문처리
-            visited[minIdx] = true;
-
-            // 선택된 정점을 기준으로 인접한 정점의 최소 거리 값을 갱신
-            for (Node node : graph[minIdx]){
-
-                // 인접 정점이 현재 가지는 최소 비용 VS 현재 선택된 정점의 비용 + 현재 선택된 정점에서 인접 정점으로 가는 비용
-                if (distance[node.idx] > distance[minIdx] + node.cost){
-                    distance[node.idx] = distance[minIdx] + node.cost;
+                // 간선으로 연결된 정점들을 모두 우선순위 큐에 넣어준다면 중복 발생
+                // 인접 정점으로의 distance 값과 현재 선택된 정점에서 인접 정점으로 가는 비용을 비교
+                if (distance[node.idx] > minNode.cost + node.cost){
+                    distance[node.idx] = minNode.cost + node.cost;
+                    pq.offer(new Node(node.idx, distance[node.idx]));
                 }
             }
         }
