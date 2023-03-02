@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -34,6 +32,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
         do {
             N = Integer.parseInt(br.readLine());
@@ -59,7 +58,11 @@ public class Main {
             sb.append("Problem ").append(testNumber + 1).append(": ").append(map[0][0] + distance[N * N - 1]).append("\n");
             testNumber++;
         } while(true);
-        System.out.println(sb);
+
+        br.close();
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
     }
 
     static void makeGraph(){
