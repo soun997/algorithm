@@ -27,8 +27,10 @@ public class Main {
         for (int i = 0; i < N - 2; i++) {
 
             for (int j = i + 1; j < N - 1; j++){
-
+                
+                // 두 개의 용액은 고른 상태
                 long target = solutions[i] + solutions[j];
+                // 하나의 용액만을 선택하면 됨 -> 이분탐색으로 0과 가장 가까운 값을 택함
                 int index = binarySearch(target, j);
                 if (Math.abs(target + solutions[index]) < min){
                     min = Math.abs(target + solutions[index]);
@@ -41,6 +43,7 @@ public class Main {
         System.out.printf("%d %d %d", answer[0], answer[1], answer[2]);
     }
 
+    // 이분탐색
     static int binarySearch(long target, int s){
         int start = s + 1;
         int end = N - 1;
@@ -58,12 +61,18 @@ public class Main {
             }
         }
 
+        // 예외 - 중복 선택을 하게 되는 경우
+        // -24 -6 -3 -2 61 98 100
+        // i = 2, j = 3일 때, 61 98 100에 대하여 이분탐색 진행
+        // 그러나 solutions[mid] + target 이 항상 0보다 크기 때문에 mid 는 61을 가리키게 됨 
+        // (s + 1 == mid)인 상태이고, mid - 1값은 이전 값을 중복으로 택하기 떄문에 제외시켜줘야 함
         if (s + 1 == mid){
             return mid;
         }
 
         long sum1 = target + solutions[mid];
         long sum2 = target + solutions[mid - 1];
+        // 
         if (Math.abs(sum1) < Math.abs(sum2)){
             return mid;
         }
