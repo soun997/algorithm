@@ -9,26 +9,23 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n + 1];
-        List<Integer> sorted = new ArrayList<>();
+        int[] sorted = new int[n + 1];
+        int[] sortedSet = new int[n + 1];
         int[][] LCS = new int[n + 1][n + 1];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 1; i <= n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        sorted.add(0);
-        for (int i = 0; i < n + 1; i++) {
-            if (!sorted.contains(arr[i])) {
-                sorted.add(arr[i]);
-            }
-        }
-        Collections.sort(sorted);
+        sorted = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(sorted);
+        int len = removeDuplicated(sorted, sortedSet);
+        //System.out.println(len);
 
         int result = 0;
-        List<Integer> longestSubsequence = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; j < sorted.size(); j++) {
-                if (arr[i] == sorted.get(j)){
+            for (int j = 1; j < len; j++) {
+                if (arr[i] == sortedSet[j]){
                     LCS[i][j] = LCS[i - 1][j - 1] + 1;
                     result = Math.max(result, LCS[i][j]);
                     continue;
@@ -43,9 +40,9 @@ public class Main {
         Stack<Integer> stk = new Stack<>();
         int[] dx = {-1, 0};
         int[] dy = {0, -1};
-        boolean[][] visited = new boolean[n + 1][sorted.size()];
+        boolean[][] visited = new boolean[n + 1][len];
         Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{n, sorted.size() - 1});
+        q.offer(new int[]{n, len - 1});
         while (!q.isEmpty()){
 
             int[] cur = q.poll();
@@ -78,5 +75,19 @@ public class Main {
             sb.append(stk.pop()).append(" ");
         }
         System.out.println(sb);
+    }
+
+    static int removeDuplicated(int[] sorted, int[] sortedSet){
+
+        int cnt = 2;
+        sortedSet[1] = sorted[1];
+        for (int i = 2; i < sorted.length; i++) {
+            if (sortedSet[cnt - 1] == sorted[i]){
+                continue;
+            }
+            sortedSet[cnt] = sorted[i];
+            cnt++;
+        }
+        return cnt;
     }
 }
