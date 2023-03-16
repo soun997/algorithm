@@ -14,7 +14,11 @@ public class Main {
         public Edge(int start, int end) {
             this.start = start;
             this.end = end;
-            this.weight = Math.sqrt(
+            this.weight = pow(start, end);
+        }
+
+        private double pow(int start, int end){
+            return Math.sqrt(
                     Math.pow(Math.abs(points[start][0] - points[end][0]), 2.0)
                             + Math.pow(Math.abs(points[start][1] - points[end][1]), 2.0)
             );
