@@ -41,6 +41,7 @@ public class Main {
     static PriorityQueue<Edge> edges;
     static int[][] points;
     static int cnt;
+    static int dup;
     static double min;
 
     public static void main(String[] args) throws IOException{
@@ -53,6 +54,7 @@ public class Main {
         edges = new PriorityQueue<>();
         points = new int[N][2];
         cnt = 0;
+        dup = 0;
         min = 0D;
 
         for (int i = 0; i < N; i++) {
@@ -74,10 +76,12 @@ public class Main {
             int x = Integer.parseInt(st.nextToken()) - 1;
             int y = Integer.parseInt(st.nextToken()) - 1;
 
-            union(x, y);
+            if (!union(x, y)){
+                dup++;
+            }
         }
 
-        while (!edges.isEmpty()){
+        while (cnt < N - 1 - M + dup){
             Edge edge = edges.poll();
             if (union(edge.start, edge.end)){
                 cnt++;
