@@ -106,7 +106,7 @@ public class Main {
 
     static int find(int x){
         if (x == p[x]) return x;
-        return find(p[x]);
+        return p[x] = find(p[x]);
     }
 
     static void makeSet(){
