@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
 
-    String binaryNumber;
+       String binaryNumber;
     boolean[] binaryTree;
     int idx;
     int size;
@@ -82,7 +82,7 @@ class Solution {
 
         makeBinaryTree();
 
-        if (binaryTree[1] && isBinaryTree(1)){
+        if (isBinaryTree(1)){
             return true;
         }
 
