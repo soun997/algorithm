@@ -11,6 +11,10 @@ public class Main {
     static int total;
 
 
+    /*
+        각각의 팀원들은 어차피 누군가를 선택해야 하므로
+        경로를 따라가다보면 싸이클이 만들어지는 구간이 생길 수 밖에 없음!
+     */
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -29,35 +33,43 @@ public class Main {
 
             total = 0;
             for (int i = 1; i <= n; i++) {
-                find(i, i, 0);
+                find(i, 0);
             }
             sb.append(n - total).append("\n");
         }
         System.out.println(sb);
     }
 
-    static boolean find(int x, int start, int count){
-        // 시작지점 외의 싸이클이 생겨서 종료하는 경우
+    static boolean find(int x, int count){
+
+        // 방문했던 곳에 또 방문하는 경우
+        // 1. 밟아왔던 경로에 싸이클이 존재함을 발견 혹은
+        // 2. 싸이클이 존재하는 경로에 진입했음을 의미
         if (visited[x]){
+            // 어느 구간이 싸이클인지 아직 확인하지 못했다면
             if (!visitedCycle[x]){
                 checkCycle(x, 0);
             }
-            return true;
+            return true;    // 싸이클은 어느 노드를 택하든 경로를 따라가다 보면 무조건 발견하게 되므로 항상 true 반환
         }
 
         visited[x] = true;
-        visitedCycle[x] = find(students[x], start, count + 1);
-        return true;
+        visitedCycle[x] = find(students[x], count + 1); // 싸이클이 생기는 경로의 노드에 대하여 visitedCycle true 처리해줌
+        return true;    // 이전 경로의 노드들에게도 true 반환
     }
 
-    static boolean checkCycle(int x, int count){
+    /*
+        싸이클이 생기는 구간: 노드를 따라가다 보면 다시 싸이클의 처음으로 돌아가게 됨
+        -> 이를 이용해 몇 개의 노드가 싸이클에 해당하는지 계산
+     */
+    static void checkCycle(int x, int count){
+
         if (visitedCycle[x]){
             total = total + count;
-            return true;
+            return;
         }
 
         visitedCycle[x] = true;
         checkCycle(students[x], count + 1);
-        return true;
     }
 }
