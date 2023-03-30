@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 import static java.lang.System.exit;
 
@@ -9,6 +8,7 @@ public class Main {
 
     static final int N = 9;
     static int[][] board = new int[N][N];
+    static boolean flag;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,6 +24,9 @@ public class Main {
     }
 
     static void dfs(int r, int c) {
+        if (flag){
+            return;
+        }
 
         if (r == N) {
             StringBuilder sb = new StringBuilder();
@@ -34,7 +37,8 @@ public class Main {
                 sb.append("\n");
             }
             System.out.println(sb);
-            exit(0);
+            flag = true;
+            return;
         }
 
         if (board[r][c] != 0) {
