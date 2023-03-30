@@ -29,9 +29,6 @@ public class Main {
 
             total = 0;
             for (int i = 1; i <= n; i++) {
-                if (visited[i]){
-                    continue;
-                }
                 find(i, i, 0);
             }
             sb.append(n - total).append("\n");
