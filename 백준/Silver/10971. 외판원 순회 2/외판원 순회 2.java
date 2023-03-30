@@ -4,51 +4,55 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static int n;
-    static int[][] w;
+    static int N;
+    static int[][] W;
     static boolean[] visited;
-    static int origin = 0;
-    static int min = Integer.MAX_VALUE;
-
+    static int startCity;
+    static int minCost;
     public static void main(String[] args) throws Exception {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        w = new int[n][n];
-        visited = new boolean[n];
 
-        for (int i = 0; i < n; i++) {
+        N = Integer.parseInt(br.readLine());
+        W = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < n; j++) {
-                w[i][j] = Integer.parseInt(st.nextToken());
+            for (int j = 0; j < N; j++) {
+                W[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            origin = i;
+        minCost = Integer.MAX_VALUE;
+        visited = new boolean[N];
+        for (int i = 0; i < N; i++) {
+            startCity = i;
             visited[i] = true;
-            visitCity(i, 0, 0);
+            visitCity(i, 1, 0);
             visited[i] = false;
         }
-        if (min == Integer.MAX_VALUE)
-            System.out.println(0);
-        else
-            System.out.println(min);
+        System.out.println(minCost);
     }
 
-    static void visitCity(int city, int cnt, int sum) {
-
-        if (cnt == n - 1) {
-            sum += w[city][origin];
-            if (w[city][origin] != 0)
-                min = Math.min(min, sum);
+    static void visitCity(int cityNo, int count, int cost){
+        if (minCost < cost){
+            return;
+        }
+        // 다시 처음 도시로 돌아가기
+        if (count == N){
+            // 처음 도시로 돌아갈 수 있을 때만
+            if (W[cityNo][startCity] != 0){
+                minCost = Math.min(minCost, cost + W[cityNo][startCity]);
+            }
             return;
         }
 
-        for (int i = 0; i < n; i++){
-            if (visited[i] || w[city][i] == 0) continue;
+        for (int i = 0; i < N; i++) {
+            // 방문할 수 없는 경우
+            if (W[cityNo][i] == 0 || visited[i]){
+                continue;
+            }
             visited[i] = true;
-            visitCity(i , cnt + 1, sum + w[city][i]);
+            visitCity(i, count + 1, cost + W[cityNo][i]);
             visited[i] = false;
         }
     }
