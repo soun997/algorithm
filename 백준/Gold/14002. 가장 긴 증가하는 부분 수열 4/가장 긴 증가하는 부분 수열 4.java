@@ -1,93 +1,54 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n + 1];
-        int[] sorted = new int[n + 1];
-        int[] sortedSet = new int[n + 1];
-        int[][] LCS = new int[n + 1][n + 1];
+        int N = Integer.parseInt(br.readLine());
+        int[] sequence = new int[N];
+        int[] LIS = new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < N; i++) {
+            sequence[i] = Integer.parseInt(st.nextToken());
         }
-        sorted = Arrays.copyOf(arr, arr.length);
-        Arrays.sort(sorted);
-        int len = removeDuplicated(sorted, sortedSet);
-        //System.out.println(len);
 
-        int result = 0;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j < len; j++) {
-                if (arr[i] == sortedSet[j]){
-                    LCS[i][j] = LCS[i - 1][j - 1] + 1;
-                    result = Math.max(result, LCS[i][j]);
-                    continue;
+        int maxLength = Integer.MIN_VALUE;
+        // LIS 배열 채우기 + LIS 구하기
+        for (int i = 0; i < N; i++) {
+            LIS[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (sequence[j] < sequence[i] && LIS[j] + 1 > LIS[i]){
+                    LIS[i] = LIS[j] + 1;
                 }
 
-                LCS[i][j] = Math.max(LCS[i - 1][j], LCS[i][j - 1]);
-                result = Math.max(result, LCS[i][j]);
             }
+            maxLength = Math.max(maxLength, LIS[i]);
         }
 
         StringBuilder sb = new StringBuilder();
-        Stack<Integer> stk = new Stack<>();
-        int[] dx = {-1, 0};
-        int[] dy = {0, -1};
-        boolean[][] visited = new boolean[n + 1][len];
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{n, len - 1});
-        while (!q.isEmpty()){
 
-            int[] cur = q.poll();
-            int check = 0;
-            for (int d = 0; d < 2; d++) {
-                int nx = cur[0] + dx[d];
-                int ny = cur[1] + dy[d];
-
-                if (visited[nx][ny]){
-                    continue;
-                }
-                if (LCS[nx][ny] == LCS[cur[0]][cur[1]]){
-                    q.offer(new int[]{nx, ny});
-                    visited[nx][ny] = true;
-                    continue;
-                }
-                check++;
-            }
-            if (check == 2){
-                stk.push(arr[cur[0]]);
-                if (LCS[cur[0]][cur[1]] == 1){
-                    break;
-                }
-                q.clear();
-                q.offer(new int[]{cur[0] - 1, cur[1] - 1});
+        int[] elements = new int[maxLength];
+        int count = maxLength;
+        for (int i = N - 1; i >= 0; i--) {
+            if (LIS[i] == count){
+                elements[count - 1] = sequence[i];
+                count--;
             }
         }
-        System.out.println(result);
-        while (!stk.isEmpty()) {
-            sb.append(stk.pop()).append(" ");
+
+        for (int i = 0; i < maxLength; i++) {
+            sb.append(elements[i]).append(" ");
         }
+
+        System.out.println(maxLength);
         System.out.println(sb);
-    }
-
-    static int removeDuplicated(int[] sorted, int[] sortedSet){
-
-        int cnt = 2;
-        sortedSet[1] = sorted[1];
-        for (int i = 2; i < sorted.length; i++) {
-            if (sortedSet[cnt - 1] == sorted[i]){
-                continue;
-            }
-            sortedSet[cnt] = sorted[i];
-            cnt++;
-        }
-        return cnt;
     }
 }
