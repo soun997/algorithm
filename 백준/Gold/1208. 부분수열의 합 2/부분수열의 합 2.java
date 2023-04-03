@@ -9,10 +9,7 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int N, S;
-    static int[] numbers;
-    static boolean[] visited;
-    static List<Long> left, right;
-    static long total;
+    static long[] k;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,76 +17,24 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         S = Integer.parseInt(st.nextToken());
+        k = new long[8000001];
 
-        numbers = new int[N];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            numbers[i] = Integer.parseInt(st.nextToken());
-        }
-
-        left = new ArrayList<>();
-        right = new ArrayList<>();
-        visited = new boolean[N];
-        powerSet(0, N / 2, 0, false);
-        powerSet(N / 2, N, 0, true);
-
-        // 정렬 -> 이분탐색 할라고
-        Collections.sort(left);
-        Collections.sort(right);
-
-        total = 0;
-        for (int i = 0; i < left.size(); i++) {
-            total = total + upperBound(left.get(i)) - lowerBound(left.get(i));
-        }
-        if (S == 0){
-            System.out.println(total - 1);
-        }
-        else {
-            System.out.println(total);
-        }
-    }
-
-    static void powerSet(int n, int r, long sum, boolean isRight){
-        if (n == r){
-            if (isRight){
-                right.add(sum);
-                return;
+            int number = Integer.parseInt(st.nextToken());
+            if (number < 0){
+                for (int j = -number; j <= 8000000; j++) {
+                    k[number + j] = k[number + j] + k[j];
+                }
             }
-            left.add(S - sum);
-            return;
-        }
-
-        visited[n] = true;
-        powerSet(n + 1, r, sum + numbers[n], isRight);
-        visited[n] = false;
-        powerSet(n + 1, r, sum, isRight);
-    }
-
-    static long lowerBound(long target){
-        int start = 0;
-        int end = right.size();
-        while (start < end){
-            int mid = (start + end) / 2;
-            if (right.get(mid) >= target){
-                end = mid;
-                continue;
+            else {
+                for (int j = 8000000 - number; j >= 0; j--) {
+                    k[number + j] = k[number + j] + k[j];
+                }
             }
-            start = mid + 1;
+            k[number + 4000000]++;
         }
-        return start;
+        System.out.println(k[S + 4000000]);
     }
 
-    static long upperBound(long target){
-        int start = 0;
-        int end = right.size();
-        while (start < end){
-            int mid = (start + end) / 2;
-            if (right.get(mid) > target){
-                end = mid;
-                continue;
-            }
-            start = mid + 1;
-        }
-        return start;
-    }
 }
