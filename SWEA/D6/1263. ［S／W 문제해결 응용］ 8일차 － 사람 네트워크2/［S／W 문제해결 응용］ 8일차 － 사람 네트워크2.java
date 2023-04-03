@@ -34,7 +34,11 @@ public class Solution {
                         continue;
                     }
                     for (int j = 0; j < N; j++) {
-                        if (j == k || j == i){
+                        if (i == j){
+                            dp[i][j] = 0;
+                            continue;
+                        }
+                        if (j == k){
                             continue;
                         }
                         dp[i][j] = Math.min(dp[i][k] + dp[k][j], dp[i][j]);
@@ -46,10 +50,10 @@ public class Solution {
             for (int i = 0; i < N; i++) {
                 int sum = 0;
                 for (int j = 0; j < N; j++) {
-                    if (dp[i][j] == INF){
-                        continue;
-                    }
                     sum += dp[i][j];
+                    if (sum > min){
+                        break;
+                    }
                 }
                 min = Math.min(min, sum);
             }
