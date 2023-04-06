@@ -45,18 +45,4 @@ public class Solution {
         }
         System.out.println(sb);
     }
-
-//    static int factorial(int N, int R){
-//
-//        if (dp[N][R] > 0) {
-//            return dp[N][R];
-//        }
-//
-//        if (N == R || R == 0){
-//            return dp[N][R] = 1;
-//        }
-//
-//        return dp[N][R] = factorial(N - 1, R - 1) + factorial(N - 1, R);
-//    }
-
 }
