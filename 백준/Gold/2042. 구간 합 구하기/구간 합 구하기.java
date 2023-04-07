@@ -18,7 +18,7 @@ public class Main {
         private void build(long[] arr) {
             this.arr = arr;
             this.size = arr.length;
-            this.tree = new long[size * 4];
+            this.tree = new long[(int)Math.pow(2, Integer.toBinaryString(size).length() + 1)];
 
             // 살펴볼 배열, 부모 노드, 왼쪽 끝, 오른쪽 끝
             buildRec(1, 0, size - 1);
