@@ -7,9 +7,9 @@ public class Main {
 
     static int W, H;
     static char[][] map;
-    static int[] dx = {0, -1, 0, 1};
-    static int[] dy = {1, 0, -1, 0};
-    static int min;
+    static final int[] dx = {0, -1, 0, 1};
+    static final int[] dy = {1, 0, -1, 0};
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,7 +30,6 @@ public class Main {
             }
         }
 
-        min = Integer.MAX_VALUE;
         System.out.println(bfs(start[0], start[1]));
     }
 
@@ -52,8 +51,7 @@ public class Main {
         while (!q.isEmpty()) {
             int[] cur = q.poll();
             if (map[cur[0]][cur[1]] == 'C'){
-                min = Math.min(min, cur[3]);
-                continue;
+                return cur[3];
             }
             for (int d = 0; d < 4; d++) {
                 int nx = cur[0] + dx[d];
@@ -78,7 +76,7 @@ public class Main {
             }
         }
 
-        return min;
+        return 0;
     }
 
     static boolean check(int x, int y){
