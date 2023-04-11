@@ -121,7 +121,7 @@ public class Main {
     }
 
     static boolean check(Marble blue, int dx, int dy){
-        while (!blue.isBlocked(0, 0)) {
+        while (!blue.isBlocked()) {
             // 구멍에 빠지면 true 리턴
             if (blue.isEscaped()) {
                 return true;
@@ -138,6 +138,13 @@ public class Main {
         public Marble(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        public boolean isBlocked(){
+            if (board[x][y] == '#') {
+                return true;
+            }
+            return false;
         }
 
         public boolean isBlocked(int dx, int dy){
