@@ -7,8 +7,8 @@ public class Main {
 
     static int N, M;
     static char[][] board;
-    static Marble red;
-    static Marble blue;
+    static Marble red;  // 빨강공
+    static Marble blue; // 파랑공
 
     // 상 좌 하 우
     static int[] dx = {-1, 0, 1, 0};
@@ -24,7 +24,6 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         board = new char[N][M];
 
-
         for (int i = 0; i < N; i++) {
             char[] inputs = br.readLine().toCharArray();
             for (int j = 0; j < M; j++) {
@@ -35,7 +34,6 @@ public class Main {
                 }
                 if (board[i][j] == 'B') {
                     blue = new Marble(i, j);
-                    continue;
                 }
             }
         }
@@ -52,8 +50,8 @@ public class Main {
     }
 
     static void dfs(int count, int rx, int ry, int bx, int by) {
-
-        if (count > 10) {
+        
+        if (count > 10 || count > min) {
             return;
         }
 
@@ -62,6 +60,7 @@ public class Main {
             Marble red = new Marble(rx, ry);
             Marble blue = new Marble(bx, by);
 
+            // 애초에 둘 다 움직일 수 없는 경우는 짤라줌
             if (red.isBlocked(dx[d], dy[d]) && blue.isBlocked(dx[d], dy[d])) {
                 continue;
             }
@@ -90,7 +89,7 @@ public class Main {
                     }
                     continue;
                 }
-                // 파란 공만 움직일 수 있는 경우
+                // 파란 공만 움직일 수 있는 경우 (벽이 아니고, 빨간공과 겹치지 않음)
                 if (!blue.isBlocked(dx[d], dy[d]) && red.isBlocked(dx[d], dy[d]) && !blue.isConflicted(dx[d], dy[d], red)){
                     blue.move(dx[d], dy[d]);
                     // 파란 공이 구멍에 빠진 경우 -> 게임 끝
@@ -100,7 +99,7 @@ public class Main {
                     }
                     continue;
                 }
-                // 빨간 공만 움직일 수 있는 경우
+                // 빨간 공만 움직일 수 있는 경우 (벽이 아니고, 파란공과 겹치지 않음)
                 if (!red.isBlocked(dx[d], dy[d]) && blue.isBlocked(dx[d], dy[d]) && !red.isConflicted(dx[d], dy[d], blue)){
                     red.move(dx[d], dy[d]);
                     // 빨간 공이 구멍에 빠진 경우 -> clear!
