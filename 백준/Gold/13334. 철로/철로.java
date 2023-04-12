@@ -23,22 +23,25 @@ public class Main {
             people.add(new Person(home, office));
         }
         // end가 작은 순으로 sort
-        Collections.sort(people, Comparator.comparingLong(o -> o.end));
+        Collections.sort(people);
         int D = Integer.parseInt(br.readLine());
 
         int max = 0;
-        PriorityQueue<Long> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>(); // start가 작은 순으로 sort
         for (Person person : people) {
             // 선분 길이보다 두 점 사이의 거리가 길다면
             if (person.end - person.start > D){
                 continue;
             }
 
+            // 우선순위 큐에 시작점 추가
             pq.offer(person.start);
             while (!pq.isEmpty()) {
+                // 시작점과 끝 점이 D 이하: 그룹 유지 가능 -> break
                 if (person.end - pq.peek() <= D){
                     break;
                 }
+                // 그룹 유지 불가능 -> 새로운 시작점으로 갱신 (그룹이 생길 때까지)
                 pq.poll();
             }
             max = Math.max(max, pq.size());
@@ -47,9 +50,9 @@ public class Main {
         System.out.println(max);
     }
 
-    static class Person {
-        long start;
-        long end;
+    static class Person implements Comparable<Person> {
+        int start;
+        int end;
 
         public Person(int home, int office) {
             this.start = home;
@@ -57,11 +60,14 @@ public class Main {
         }
 
         @Override
-        public String toString() {
-            return "Person{" +
-                    "home=" + start +
-                    ", office=" + end +
-                    '}';
+        public int compareTo(Person other) {
+            if (this.end < other.end){
+                return -1;
+            } else if (this.end == other.end){
+                return Integer.compare(this.start, other.start);
+            } else {
+                return 1;
+            }
         }
     }
 }
