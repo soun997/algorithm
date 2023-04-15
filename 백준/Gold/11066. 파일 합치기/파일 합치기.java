@@ -4,6 +4,11 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+    
+    static int K;
+    static int[] files;
+    static int[][] dp;
+    static int[] totalSize;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -11,10 +16,10 @@ public class Main {
 
         int T = Integer.parseInt(br.readLine());
         for (int t = 1; t <= T; t++) {
-            int K = Integer.parseInt(br.readLine());
-            int[] files = new int[K + 1];
-            int[][] dp = new int[K + 1][K + 1];
-            int[] totalSize = new int[K + 1];
+            K = Integer.parseInt(br.readLine());
+            files = new int[K + 1];
+            dp = new int[K + 1][K + 1];
+            totalSize = new int[K + 1];
             StringTokenizer st = new StringTokenizer(br.readLine());
 
             for (int i = 1; i <= K; i++) {
