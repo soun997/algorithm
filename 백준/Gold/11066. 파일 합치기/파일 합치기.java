@@ -1,43 +1,55 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// 백준 11066 : 파일 합치기
 public class Main {
-    
-    static int K;
-    static int[] files;
-    static int[][] dp;
-    static int[] totalSize;
+	
+	static int K;
+	static int[] C, sum;
+	static int[][] memo;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder result = new StringBuilder();
+	public static void main(String[] args) throws Exception {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int Test = Integer.parseInt(bf.readLine());
+		
+		for (int T = 0 ; T < Test ; T++) {
+			K = Integer.parseInt(bf.readLine());
+			
+			C = new int[K+1];
+			sum = new int[K+1];
+			memo = new int[K+1][K+1];
+			
+			StringTokenizer st = new StringTokenizer(bf.readLine());
+			
+			for (int i = 1 ; i <= K ; i++) {
+				C[i] = Integer.parseInt(st.nextToken());
 
-        int T = Integer.parseInt(br.readLine());
-        for (int t = 1; t <= T; t++) {
-            K = Integer.parseInt(br.readLine());
-            files = new int[K + 1];
-            dp = new int[K + 1][K + 1];
-            totalSize = new int[K + 1];
-            StringTokenizer st = new StringTokenizer(br.readLine());
+				sum[i] = sum[i-1] + C[i]; // 부분합
+			}
+			
+			solve();
 
-            for (int i = 1; i <= K; i++) {
-                files[i] = Integer.parseInt(st.nextToken());
-                totalSize[i] = totalSize[i - 1] + files[i];
-            }
+			sb.append(memo[1][K]).append("\n");
+		}
 
-            for (int k = 1; k < K; k++) {
-                for (int i = 1; i + k <= K; i++) {
-                    dp[i][i + k] = Integer.MAX_VALUE;
-                    for (int j = i; j < i + k; j++) {
-                        dp[i][i + k] = Math.min(dp[i][i + k], dp[i][j] + dp[j + 1][i + k] + (totalSize[i + k] - totalSize[i - 1]));
-                    }
-                }
-            }
+		System.out.println(sb);
+	}
 
-            result.append(dp[1][K]).append("\n");
-        }
-        System.out.println(result);
-    }
+	private static void solve() {
+		for (int range = 1 ; range < K ; range++) { // 범위 길이
+			
+			for (int start = 1 ; start <= K - range ; start++) { // 시작
+				int end = range + start;
+
+				memo[start][end] = Integer.MAX_VALUE;
+
+				for (int mid = start ; mid < end ; mid++) { // 시작부터 마지막 까지
+					memo[start][end] = Math.min(memo[start][end], memo[start][mid] + memo[mid+1][end] + (sum[end] - sum[start-1]));
+				}
+			}
+		}
+	}
 }
