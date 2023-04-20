@@ -1,46 +1,40 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static int[] p;
-    static int n;
-    static int m;
-    static int[] nums;
-    static boolean [] visited;
+    static int N, M;
+    static int[] choices;
     static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        p = new int[n];
-        nums = new int[m];
-        visited = new boolean[n];
-        for (int i = 0; i < n; i++){
-            p[i] = i + 1;
-        }
-        combi(0, 0);
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        choices = new int[M];
+
+        dfs(0, 0);
+
         System.out.println(sb);
     }
 
-    static void combi(int cnt, int start) {
-        if(cnt == m) {
-            for (int i = 0; i < m; i++) {
-                sb.append(nums[i]).append(" ");
+    static void dfs(int start, int cnt){
+        if (cnt == M) {
+            for (int i = 0; i < M; i++) {
+                sb.append(choices[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
-        for (int i = start; i < n; i++) {
-            visited[i]=true;
-            nums[cnt]=p[i];
-            combi(cnt + 1, i + 1);
-            nums[cnt]=0;
-            visited[i]=false;
+
+        for (int i = start; i < N; i++) {
+
+            choices[cnt] = i + 1;
+            dfs(i + 1, cnt + 1);
         }
     }
 }
