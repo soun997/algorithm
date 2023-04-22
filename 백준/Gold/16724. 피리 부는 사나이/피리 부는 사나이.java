@@ -8,7 +8,6 @@ public class Main {
 
     static int N, M;
     static int[][] map;
-    static boolean[][] visited;
     static int numberOfBooth;
     // 하 좌 상 우
     static int[] dx = {1, 0, -1, 0};
@@ -21,7 +20,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         map = new int[N][M];
-        visited = new boolean[N][M];
         numberOfBooth = 0;
 
         for (int i = 0; i < N; i++) {
@@ -46,7 +44,7 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (!visited[i][j]){
+                if (map[i][j] != -1){
                     bfs(i, j);
                     numberOfBooth++;
                 }
@@ -58,20 +56,20 @@ public class Main {
     static void bfs(int x, int y){
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[]{x, y});
-        visited[x][y] = true;
 
         while (!q.isEmpty()) {
             int[] cur = q.poll();
+            int dir = map[cur[0]][cur[1]];
+            map[cur[0]][cur[1]] = -1;
             for (int d = 0; d < 4; d++) {
                 int nx = cur[0] + dx[d];
                 int ny = cur[1] + dy[d];
-                if (!check(nx, ny) || visited[nx][ny]){
+                if (!check(nx, ny) || map[nx][ny] == -1){
                     continue;
                 }
                 // 진행 방향에 해당 || 진행 방향에 해당하지는 않지만, 싸이클 안에 속해있는 경우
-                if (d == map[cur[0]][cur[1]] || d == (map[nx][ny] + 2) % 4){
+                if (d == dir || d == (map[nx][ny] + 2) % 4){
                     q.offer(new int[]{nx, ny});
-                    visited[nx][ny] = true;
                 }
             }
         }
