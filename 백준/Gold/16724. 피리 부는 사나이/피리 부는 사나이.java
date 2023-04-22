@@ -1,84 +1,67 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N, M;
-    static int[][] map;
-    static int numberOfBooth;
-    // 하 좌 상 우
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, -1, 0, 1};
+	static boolean[][] visited;
+	static boolean[][] finished;
+	static int safezone;
+	static int[][] map;
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		
+		map = new int[N][M];
+		
+		for(int i=0;i<N;i++) {
+			String line = br.readLine();
+			for(int j=0;j<M;j++) {
+				int c = line.charAt(j);
+				if(c == 'U') map[i][j] = 0;
+				else if(c == 'D') map[i][j] = 1;
+				else if(c == 'L') map[i][j] = 2;
+				else if(c == 'R') map[i][j] = 3;
+			}
+		}
+		
+		
+		// 사이클의 개수를 세면 된다.
+		visited = new boolean[N][M]; // 방문한 위치
+		finished = new boolean[N][M]; // 사이클인지 확인한 위치
+		safezone = 0;
+		
+		for(int i=0;i<N;i++) {
+			for(int j=0;j<M;j++) {
+				if(!visited[i][j]) dfs(i,j);
+			}
+		}
+		
+		System.out.println(safezone);
+		
+	}
+	
+	static int dr[] = {-1,1,0,0};
+	static int dc[] = {0,0,-1,1};
+	public static void dfs(int r, int c) {
+		
+		visited[r][c] = true;
+		
+		int nr = r + dr[map[r][c]];
+		int nc = c + dc[map[r][c]];
+		
+		if(!visited[nr][nc]) {
+			dfs(nr,nc);
+		}else {
+			
+			if(!finished[nr][nc]) safezone++;
+		}
+		
+		finished[r][c] = true;
+	}
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        map = new int[N][M];
-        numberOfBooth = 0;
-
-        for (int i = 0; i < N; i++) {
-            String[] input = br.readLine().split("");
-            for (int j = 0; j < M; j++) {
-                switch(input[j]){
-                    case "D":
-                        map[i][j] = 0;
-                        break;
-                    case "L":
-                        map[i][j] = 1;
-                        break;
-                    case "U":
-                        map[i][j] = 2;
-                        break;
-                    case "R":
-                        map[i][j] = 3;
-                        break;
-                }
-            }
-        }
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (map[i][j] != -1){
-                    bfs(i, j);
-                    numberOfBooth++;
-                }
-            }
-        }
-        System.out.println(numberOfBooth);
-    }
-
-    static void bfs(int x, int y){
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{x, y});
-
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int dir = map[cur[0]][cur[1]];
-            map[cur[0]][cur[1]] = -1;
-            for (int d = 0; d < 4; d++) {
-                int nx = cur[0] + dx[d];
-                int ny = cur[1] + dy[d];
-                if (!check(nx, ny) || map[nx][ny] == -1){
-                    continue;
-                }
-                // 진행 방향에 해당 || 진행 방향에 해당하지는 않지만, 싸이클 안에 속해있는 경우
-                if (d == dir || d == (map[nx][ny] + 2) % 4){
-                    q.offer(new int[]{nx, ny});
-                }
-            }
-        }
-    }
-
-    static boolean check(int x, int y){
-        if (x < 0 || x >= N || y < 0 || y >= M) {
-            return false;
-        }
-        return true;
-    }
 }
