@@ -11,7 +11,7 @@ public class Main {
     static int count;
 
     static Queue<int[]> q = new ArrayDeque<>();
-    static Map<Character, List<int[]>> doors = new HashMap<>();
+    static List<int[]>[] doors;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, -1, 0, 1};
 
@@ -71,13 +71,13 @@ public class Main {
                 // 문이지만, 키가 없는 상태
                 if (Character.isUpperCase(map[nx][ny]) && !keys[map[nx][ny] - 65]){
                     // 언젠가는 키를 찾을 수도 있으므로 일단 저장
-                    doors.get(map[nx][ny]).add(new int[]{nx, ny});
+                    doors[map[nx][ny] - 65].add(new int[]{nx, ny});
                     continue;
                 }
                 // 열쇠 -> 줍줍
                 if (Character.isLowerCase(map[nx][ny])){
                     keys[map[nx][ny] - 97] = true;
-                    List<int[]> savedDoors = doors.get(Character.toUpperCase(map[nx][ny]));
+                    List<int[]> savedDoors = doors[Character.toUpperCase(map[nx][ny]) - 65];
                     // 해당 열쇠로 열 수 있는 문이 있다면
                     if (savedDoors.size() > 0){
                         for (int[] door : savedDoors){
@@ -112,12 +112,11 @@ public class Main {
         keys = new boolean[26];
 
         q.clear();
-        doors.clear();
+        doors = new ArrayList[26];
         for (int i = 0; i < 26; i++) {
-            doors.put((char)(i + 65), new ArrayList<>());
+            doors[i] = new ArrayList<>();
         }
 
         count = 0;
     }
-
 }
