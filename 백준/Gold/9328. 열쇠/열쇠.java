@@ -9,6 +9,8 @@ public class Main {
     static boolean[][] visited;
     static boolean[] keys;
     static int count;
+
+    static Queue<int[]> q = new ArrayDeque<>();
     static Map<Character, List<int[]>> doors = new HashMap<>();
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, -1, 0, 1};
@@ -33,12 +35,12 @@ public class Main {
                 }
             }
 
-            char[] equip = br.readLine().toCharArray();
-            for (int i = 0; i < equip.length; i++) {
-                if (equip[i] == '0'){
+            char[] equipped = br.readLine().toCharArray();
+            for (int i = 0; i < equipped.length; i++) {
+                if (equipped[i] == '0'){
                     continue;
                 }
-                keys[equip[i] - 97] = true;
+                keys[equipped[i] - 97] = true;
             }
             bfs(0, 0);
             result.append(count).append("\n");
@@ -50,7 +52,6 @@ public class Main {
 
     static void bfs(int x, int y){
 
-        Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[]{x, y});
         visited[x][y] = true;
 
@@ -109,6 +110,8 @@ public class Main {
         }
         visited = new boolean[H + 2][W + 2];
         keys = new boolean[26];
+
+        q.clear();
         doors.clear();
         for (int i = 0; i < 26; i++) {
             doors.put((char)(i + 65), new ArrayList<>());
