@@ -5,7 +5,7 @@ import java.util.*;
 public class Main {
 
     static char[][] map;
-    static boolean[][] visited;
+    static int[][] visited;
     static List<Wall> walls;
 
     static final int[] DX = {-1, 0, 1, 0, 1, 1, -1, -1, 0};
@@ -15,7 +15,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         map = new char[8][8];
-        visited = new boolean[8][8];
+        visited = new int[8][8];
         walls = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
@@ -35,6 +35,7 @@ public class Main {
     static int bfs(int x, int y) {
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[]{x, y, 0});
+        visited[x][y]++;
 
         int prevSecond = 0;
         while (!q.isEmpty()) {
@@ -61,10 +62,11 @@ public class Main {
                 int nx = cur[0] + DX[d];
                 int ny = cur[1] + DY[d];
                 // 방문할 수 없는 경우들
-                if (isOutOfBound(nx, ny) || map[nx][ny] == '#') {
+                if (isOutOfBound(nx, ny) || map[nx][ny] == '#' || visited[nx][ny] > 2) {
                     continue;
                 }
                 q.offer(new int[]{nx, ny, cur[2] + 1});
+                visited[nx][ny]++;
             }
         }
 
