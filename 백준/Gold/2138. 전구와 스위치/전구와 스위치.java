@@ -42,7 +42,7 @@ public class Main {
         int result = 0;
         for (int i = 2; i <= N; i++) {
 
-            if (lightBulbs[i - 1] != target[i - 1]){
+            if (lightBulbs[i - 1] ^ target[i - 1]){
                 pushSwitch(i, lightBulbs);
                 result++;
             }
@@ -64,7 +64,7 @@ public class Main {
 
     private static boolean isSame(boolean[] lightBulbs) {
         for (int i = 1; i <= N; i++){
-            if (lightBulbs[i] != target[i]){
+            if (lightBulbs[i] ^ target[i]){
                 return false;
             }
         }
