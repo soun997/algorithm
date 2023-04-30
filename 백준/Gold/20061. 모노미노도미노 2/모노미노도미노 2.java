@@ -42,18 +42,18 @@ public class Main {
         switch (type) {
             // 1x1
             case 1:
-                move(new int[]{row, 0}, new int[]{row, 0}, GREEN);
-                move(new int[]{0, col}, new int[]{0, col}, BLUE);
+                drop(new int[]{row, 0}, new int[]{row, 0}, GREEN);
+                drop(new int[]{0, col}, new int[]{0, col}, BLUE);
                 break;
             // 1x2
             case 2:
-                move(new int[]{row, 0}, new int[]{row, 1}, GREEN);
-                move(new int[]{0, col}, new int[]{0, col + 1}, BLUE);
+                drop(new int[]{row, 0}, new int[]{row, 1}, GREEN);
+                drop(new int[]{0, col}, new int[]{0, col + 1}, BLUE);
                 break;
             // 2x1
             case 3:
-                move(new int[]{row, 0}, new int[]{row + 1, 0}, GREEN);
-                move(new int[]{0, col}, new int[]{1, col}, BLUE);
+                drop(new int[]{row, 0}, new int[]{row + 1, 0}, GREEN);
+                drop(new int[]{0, col}, new int[]{1, col}, BLUE);
                 break;
         }
 
@@ -63,7 +63,7 @@ public class Main {
         checkFaintArea();
     }
 
-    static void move(int[] start, int[] end, int color) {
+    static void drop(int[] start, int[] end, int color) {
 
         int[][] board = (color == GREEN ? greenBoard : blueBoard);
         int[] nStart = {start[0], start[1]};
@@ -108,44 +108,37 @@ public class Main {
 
         for (int i = MAX - 1; i >= 2; i--) {
 
-            int count = 0;
+            int gCount = 0;
+            int bCount = 0;
             for (int j = 0; j < 4; j++) {
                 if (greenBoard[j][i] != 0) {
-                    count++;
+                    gCount++;
+                }
+                if (blueBoard[i][j] != 0) {
+                    bCount++;
                 }
             }
-            if (count == 4){
+            // 한 줄이 꽉 채워진 경우
+            if (gCount == 4){
                 greenCount++;
                 greenIdx = i;
+                pop(greenIdx, GREEN);
             }
 
-            count = 0;
-            for (int j = 0; j < 4; j++) {
-                if (blueBoard[i][j] != 0) {
-                    count++;
-                }
-            }
-            if (count == 4){
+            if (bCount == 4){
                 blueCount++;
                 blueIdx = i;
+                pop(blueIdx, BLUE);
             }
         }
 
-        // 한 줄이 꽉 채워졌다 -> 지운다
-        for (int i = 0; i < greenCount; i++) {
-            pop(greenIdx + i, GREEN);
-        }
         // 한 줄 이상이 채워져서 사라진 경우에만 -> 앞쪽의 블럭들을 (지운 줄의 개수)칸 만큼 옮긴다
         if (greenIdx != -1){
-            move(greenCount, greenIdx - 1, GREEN);
+            pull(greenCount, greenIdx - 1, GREEN);
         }
-        
-        // 이하동문
-        for (int i = 0; i < blueCount; i++) {
-            pop(blueIdx + i, BLUE);
-        }
+
         if (blueIdx != -1){
-            move(blueCount, blueIdx - 1, BLUE);
+            pull(blueCount, blueIdx - 1, BLUE);
         }
 
         score = score + greenCount + blueCount;
@@ -169,7 +162,7 @@ public class Main {
             pop((MAX - i) - 1, GREEN);
         }
         // 지운 줄의 앞쪽의 블럭들을 (지운 줄의 개수)칸 만큼 옮긴다
-        move(greenCount, (MAX - greenCount) - 1, GREEN);
+        pull(greenCount, (MAX - greenCount) - 1, GREEN);
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
@@ -182,7 +175,7 @@ public class Main {
         for (int i = 0; i < blueCount; i++) {
             pop((MAX - i) - 1, BLUE);
         }
-        move(blueCount, (MAX - blueCount) - 1, BLUE);
+        pull(blueCount, (MAX - blueCount) - 1, BLUE);
     }
 
     static void pop(int idx, int color){
@@ -197,7 +190,7 @@ public class Main {
         }
     }
 
-    static void move(int count, int idx, int color) {
+    static void pull(int count, int idx, int color) {
 
         for (int i = 0; i < 4; i++) {
 
