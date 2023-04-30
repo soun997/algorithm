@@ -27,7 +27,7 @@ public class Main {
                 map[i][j] = input[j];
             }
         }
-        Collections.reverse(walls);
+
         System.out.println(bfs(7, 0));
     }
 
@@ -86,8 +86,8 @@ public class Main {
 
     static void moveWall(){
 
-        for (Wall wall : walls) {
-            wall.move();
+        for (int i = walls.size() - 1; i >= 0; i--) {
+            walls.get(i).move();
         }
     }
 
@@ -98,7 +98,7 @@ public class Main {
         return false;
     }
 
-    static class Wall implements Comparable<Wall> {
+    static class Wall {
 
         int x;
         int y;
@@ -116,12 +116,6 @@ public class Main {
             }
             x++;
             map[x][y] = '#';
-        }
-
-        @Override
-        public int compareTo(Wall other) {
-
-            return -1 * Integer.compare(this.x, other.x);
         }
     }
 }
