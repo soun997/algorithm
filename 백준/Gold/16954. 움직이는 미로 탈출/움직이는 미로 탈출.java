@@ -6,7 +6,7 @@ public class Main {
 
     static char[][] map;
     static int[][] visited;
-    static List<Wall> walls;
+    static Stack<Wall> walls;
 
     static final int[] DX = {-1, 0, 1, 0, 1, 1, -1, -1, 0};
     static final int[] DY = {0, -1, 0, 1, 1, -1, 1, -1, 0};
@@ -16,13 +16,13 @@ public class Main {
 
         map = new char[8][8];
         visited = new int[8][8];
-        walls = new ArrayList<>();
+        walls = new Stack<>();
 
         for (int i = 0; i < 8; i++) {
             char[] input = br.readLine().toCharArray();
             for (int j = 0; j < 8; j++) {
                 if (input[j] == '#'){
-                    walls.add(new Wall(i, j));
+                    walls.push(new Wall(i, j));
                 }
                 map[i][j] = input[j];
             }
@@ -87,7 +87,9 @@ public class Main {
     static void moveWall(){
 
         for (int i = walls.size() - 1; i >= 0; i--) {
-            walls.get(i).move();
+            if (walls.get(i).move()){
+                walls.pop();
+            }
         }
     }
 
@@ -108,14 +110,15 @@ public class Main {
             this.y = y;
         }
 
-        public void move(){
+        public boolean move(){
             map[x][y] = '.';
             // 범위를 벗어나면 이동할 수 없도록
             if (isOutOfBound(x + 1, y)){
-                return;
+                return true;
             }
             x++;
             map[x][y] = '#';
+            return false;
         }
     }
 }
