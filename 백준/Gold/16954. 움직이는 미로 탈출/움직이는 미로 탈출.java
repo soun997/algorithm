@@ -27,8 +27,7 @@ public class Main {
                 map[i][j] = input[j];
             }
         }
-
-        Collections.sort(walls);
+        Collections.reverse(walls);
         System.out.println(bfs(7, 0));
     }
 
@@ -61,7 +60,10 @@ public class Main {
             for (int d = 0; d < 9; d++){
                 int nx = cur[0] + DX[d];
                 int ny = cur[1] + DY[d];
+
                 // 방문할 수 없는 경우들
+                // 욱제가 제자리에 있기로 선택한 경우, 같은 곳을 한 번 더 방문할 수 있기 때문에 visited 배열을 int 형으로 선언
+                // 최대 2번까지만 방문함이 보장되기 때문에, 3번 이상 방문할 경우 그냥 넘어감
                 if (isOutOfBound(nx, ny) || map[nx][ny] == '#' || visited[nx][ny] > 2) {
                     continue;
                 }
