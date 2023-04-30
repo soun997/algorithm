@@ -102,7 +102,12 @@ public class Main {
 
         int greenCount = 0;
         int greenIdx = -1;
+
+        int blueCount = 0;
+        int blueIdx = -1;
+
         for (int i = MAX - 1; i >= 2; i--) {
+
             int count = 0;
             for (int j = 0; j < 4; j++) {
                 if (greenBoard[j][i] != 0) {
@@ -113,20 +118,8 @@ public class Main {
                 greenCount++;
                 greenIdx = i;
             }
-        }
-        // 한 줄이 꽉 채워졌다 -> 지운다
-        for (int i = 0; i < greenCount; i++) {
-            pop(greenIdx + i, GREEN);
-        }
-        // 한 줄 이상이 채워져서 사라진 경우에만 -> 앞쪽의 블럭을 옮긴다
-        if (greenIdx != -1){
-            move(greenCount, greenIdx - 1, GREEN);
-        }
 
-        int blueCount = 0;
-        int blueIdx = -1;
-        for (int i = MAX - 1; i >= 2; i--) {
-            int count = 0;
+            count = 0;
             for (int j = 0; j < 4; j++) {
                 if (blueBoard[i][j] != 0) {
                     count++;
@@ -137,11 +130,20 @@ public class Main {
                 blueIdx = i;
             }
         }
+
         // 한 줄이 꽉 채워졌다 -> 지운다
+        for (int i = 0; i < greenCount; i++) {
+            pop(greenIdx + i, GREEN);
+        }
+        // 한 줄 이상이 채워져서 사라진 경우에만 -> 앞쪽의 블럭들을 (지운 줄의 개수)칸 만큼 옮긴다
+        if (greenIdx != -1){
+            move(greenCount, greenIdx - 1, GREEN);
+        }
+        
+        // 이하동문
         for (int i = 0; i < blueCount; i++) {
             pop(blueIdx + i, BLUE);
         }
-        // 한 줄 이상이 채워져서 사라진 경우에만 -> 앞쪽의 블럭들을 (지운 줄의 개수)칸 만큼 옮긴다
         if (blueIdx != -1){
             move(blueCount, blueIdx - 1, BLUE);
         }
@@ -197,19 +199,18 @@ public class Main {
 
     static void move(int count, int idx, int color) {
 
-        if (color == GREEN){
-            for (int i = 0; i < 4; i++) {
-                for (int j = idx; j >= 0; j--) {
+        for (int i = 0; i < 4; i++) {
+
+            for (int j = idx; j >= 0; j--) {
+
+                if (color == GREEN){
                     if (greenBoard[i][j] != 0){
                         greenBoard[i][j] = 0;
                         greenBoard[i + DR[color] * count][j + DC[color] * count] = 1;
                     }
                 }
-            }
-        }
-        if (color == BLUE) {
-            for (int i = 0; i < 4; i++) {
-                for (int j = idx; j >= 0; j--) {
+
+                if (color == BLUE){
                     if (blueBoard[j][i] != 0){
                         blueBoard[j][i] = 0;
                         blueBoard[j + DR[color] * count][i + DC[color] * count] = 1;
