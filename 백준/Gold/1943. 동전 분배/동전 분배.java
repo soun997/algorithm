@@ -31,7 +31,7 @@ public class Main {
             }
 
             dp = new boolean[100001];
-            // 현재 존재하는 동전 한 종류만으로 만들 수 있는 가짓수
+            // 현재 존재하는 동전 한 종류만으로 만들 수 있는 금액
             for (int i = 0; i < N; i++){
                 for (int j = 1; j <= coins[i].quantity; j++) {
                     dp[coins[i].value * j] = true;  // 1, 2, 3, ... 개를 사용했을 때
@@ -42,19 +42,31 @@ public class Main {
                 sb.append(1).append("\n");
                 continue;
             }
+
+            boolean flag = false;
             // 동전을 분배하여 total / 2를 만들 수 있는 지
             for (int i = 0; i < N; i++){
 
                 for (int j = total / 2; j >= coins[i].value; j--){
+
                     // dp[j - coins[i].value]가 가능해야만 해당 금액에 다른 동전을 더해줄 수 있음
                     if (!dp[j - coins[i].value]){
                         continue;
                     }
                     // 동전을 하나씩 더해감
                     for (int k = 1; k <= coins[i].quantity; k++) {
-
+                        if (j - coins[i].value + k * coins[i].value > total / 2){
+                            break;
+                        }
                         dp[j - coins[i].value + k * coins[i].value] = true;
                     }
+                    if (dp[total / 2]){
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag){
+                    break;
                 }
             }
             sb.append((dp[total / 2] ? 1 : 0)).append("\n");
