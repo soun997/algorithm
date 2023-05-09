@@ -19,6 +19,7 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         map = new int[N][N];
         marbles = new ArrayList<>();
+        marbles.add(-1);
         result = new int[4];
 
         // 구슬 정보
@@ -48,7 +49,7 @@ public class Main {
         int[] dx = {0, 1, 0, -1};
         int[] dy = {-1, 0, 1, 0};
 
-        int idx = 0;
+        int idx = 1;
         int max = 1;
         int dir = 0;
         while (true) {
@@ -95,12 +96,11 @@ public class Main {
 
     // 연속된 구슬을 폭발시킨다
     static boolean explosion() {
-        if (marbles.size() == 0){
-            return false;
-        }
+
         boolean flag = false;
         int conscious = 1;
         for (int i = marbles.size() - 1; i > 0; i--) {
+
             // 연속된 구슬
             if (marbles.get(i) == marbles.get(i - 1)) {
                 conscious++;
@@ -116,16 +116,6 @@ public class Main {
                 conscious = 1;
             }
         }
-        if (marbles.get(1) == marbles.get(0)){
-            if (conscious >= 4) {
-                flag = true;
-                int num = marbles.get(0);
-                result[num] = result[num] + conscious;
-                for (int k = 0 + conscious - 1; k >= 0; k--) {
-                    marbles.remove(k);
-                }
-            }
-        }
 
         return flag;
     }
@@ -133,8 +123,8 @@ public class Main {
     static void transform() {
         List<Integer> newMarbles = new ArrayList<>();
         int marbleCount = marbles.size();
-        int left = 0;
-        int right = 0;
+        int left = 1;
+        int right = 1;
         while (right < marbleCount) {
             if (marbles.get(left).equals(marbles.get(right))) {
                 right++;
@@ -154,5 +144,6 @@ public class Main {
         }
 
         marbles = new ArrayList<>(newMarbles.subList(0, Math.min(newMarbles.size(), N * N - 1)));
+        marbles.add(0, -1);
     }
 }
