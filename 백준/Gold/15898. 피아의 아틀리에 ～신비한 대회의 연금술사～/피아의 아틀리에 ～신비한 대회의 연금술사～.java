@@ -15,7 +15,7 @@ public class Main {
     static Material[][] kiln;
     static int[] pickedMaterial, pickedPosition, pickedDirection;
     static boolean[] alreadyPickedMaterial;
-    
+
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -116,7 +116,11 @@ public class Main {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                kiln[i][j] = new Material(0, 'W');
+                if (kiln[i][j] == null){
+                    kiln[i][j] = new Material(0, 'W');
+                }
+                kiln[i][j].effect = 0;
+                kiln[i][j].element = 'W';
             }
         }
     }
