@@ -12,17 +12,17 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         T = Integer.parseInt(br.readLine());
+        dp = new long[101];
+        Arrays.fill(dp, Long.MAX_VALUE);
+        makeMinNumber();
         for (int t = 0; t < T; t++) {
             N = Integer.parseInt(br.readLine());
-            dp = new long[101];
-            Arrays.fill(dp, Long.MAX_VALUE);
-
 
             // 1과 7만을 이용해서 가장 큰 수 만들기
             String max = makeMaxNumber();
 
             // dp를 이용해서 가장 작은 수 만들기
-            long min = makeMinNumber();
+            long min = dp[N];
 
             System.out.println(min + " " + max);
         }
@@ -48,7 +48,7 @@ public class Main {
         return sb.reverse().toString();
     }
 
-    static long makeMinNumber(){
+    static void makeMinNumber(){
 
         // STEP1 초기 dp 테이블 채우기
         dp[2] = 1;
@@ -59,7 +59,7 @@ public class Main {
         dp[7] = 8;
 
         // STEP2 dp 수행
-        for (int i = 8; i <= N; i++){
+        for (int i = 8; i <= 100; i++){
             for (int j = 2; j <= i - 5; j++){
                 long prefix = dp[j] == 0 ? 6 : dp[j];
                 long postfix = dp[i - j];
@@ -67,6 +67,6 @@ public class Main {
             }
         }
 
-        return dp[N] == 0 ? 6 : dp[N];
+        dp[6] = 6;
     }
 }
