@@ -60,12 +60,9 @@ public class Main {
 
         // STEP2 dp 수행
         for (int i = 8; i <= N; i++){
-            for (int j = 2; j <= i - 2; j++){
-                long prefix = dp[j];
+            for (int j = 2; j <= i - 5; j++){
+                long prefix = dp[j] == 0 ? 6 : dp[j];
                 long postfix = dp[i - j];
-                if (dp[j] == 0){
-                    prefix = 6;
-                }
                 dp[i] = Math.min(dp[i], prefix * (long)Math.pow(10, postfix == 0 ? 1 : (long)Math.log10(postfix) + 1) + postfix);
             }
         }
