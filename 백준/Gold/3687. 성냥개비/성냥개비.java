@@ -1,17 +1,11 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class Main {
 
-    static final int[] NEED = {6, 2, 5, 5, 4, 5, 6, 3, 7, 6, 6};
-
     static int T;
     static int N;   // 성냥개비의 개수
-    static List<MatchStickNumber> decreaseOrderNeed;
     static long[] dp;
 
     public static void main(String[] args) throws Exception {
@@ -20,14 +14,9 @@ public class Main {
         T = Integer.parseInt(br.readLine());
         for (int t = 0; t < T; t++) {
             N = Integer.parseInt(br.readLine());
-            decreaseOrderNeed = new ArrayList<>();
             dp = new long[101];
             Arrays.fill(dp, Long.MAX_VALUE);
 
-            for (int i = 0; i <= 9; i++) {
-                decreaseOrderNeed.add(new MatchStickNumber(i, NEED[i]));
-            }
-            Collections.sort(decreaseOrderNeed);
 
             // 1과 7만을 이용해서 가장 큰 수 만들기
             String max = makeMaxNumber();
@@ -77,31 +66,10 @@ public class Main {
                 if (dp[j] == 0){
                     prefix = 6;
                 }
-                StringBuilder sb = new StringBuilder();
-                sb.append(prefix).append(postfix);
-                dp[i] = Math.min(dp[i], Long.parseLong(sb.toString()));
+                dp[i] = Math.min(dp[i], prefix * (long)Math.pow(10, postfix == 0 ? 1 : (long)Math.log10(postfix) + 1) + postfix);
             }
         }
 
         return dp[N] == 0 ? 6 : dp[N];
-    }
-
-    static class MatchStickNumber implements Comparable<MatchStickNumber> {
-
-        int number;
-        int need;
-
-        public MatchStickNumber(int number, int need) {
-            this.number = number;
-            this.need = need;
-        }
-
-        @Override
-        public int compareTo(MatchStickNumber other) {
-            if (this.need == other.need){
-                return Integer.compare(this.number, other.number);
-            }
-            return -1 * Integer.compare(this.need, other.need);
-        }
     }
 }
