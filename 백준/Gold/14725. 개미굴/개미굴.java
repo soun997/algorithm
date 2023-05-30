@@ -51,7 +51,6 @@ public class Main {
             for (Character c : node.children.keySet()){
                 if (isDone){
                     sb.append("--".repeat(node.children.get(c).depth));
-                    isDone = false;
                 }
 
                 if (node.children.get(c).isWord){
