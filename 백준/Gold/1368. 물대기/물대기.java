@@ -45,9 +45,6 @@ public class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int to = 0; to < N; to++) {
                 int weight = Integer.parseInt(st.nextToken());
-                if (weight == 0){
-                    continue;
-                }
                 graph[from].add(new Edge(to, weight));
                 graph[to].add(new Edge(from, weight));
             }
