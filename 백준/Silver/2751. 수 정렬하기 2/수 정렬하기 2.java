@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 // 수 정렬하기 2
 public class Main {
 
-    static final int OFFSET = 2_000_000;
+    static final int OFFSET = 1_000_000;
     static int N;
     static int[] numbers;
     static int max;
