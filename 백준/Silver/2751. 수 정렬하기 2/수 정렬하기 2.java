@@ -19,10 +19,11 @@ public class Main {
         for (int i = 0; i < N; i++) {
             int num = Integer.parseInt(br.readLine());
             numbers[num + OFFSET]++;
+            max = Math.max(max, num + OFFSET);
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <= OFFSET * 2; i++) {
+        for (int i = 0; i <= max; i++) {
             if (numbers[i] != 0){
                 sb.append(i - OFFSET).append("\n");
             }
