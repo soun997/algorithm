@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -17,7 +15,7 @@ public class Main {
     }
 
     static int N;
-    static Map<Integer, Node> tree;
+    static Node[] tree;
     static int total;
     static int duplicated;
 
@@ -25,7 +23,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        tree = new HashMap<>();
+        tree = new Node[N + 1];
         total = 0;
         duplicated = 0;
 
@@ -34,7 +32,7 @@ public class Main {
             int p = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            tree.computeIfAbsent(p, key -> new Node(a, b));
+            tree[p] = new Node(a, b);
         }
 
         circuit(1, 0);
@@ -42,32 +40,24 @@ public class Main {
         System.out.println(total - duplicated);
     }
 
-    static boolean circuit(int root, int depth){
-        // 하위 노드가 없다면 return
-        if (root == -1) {
-            return false;
-        }
+    static void circuit(int root, int depth){
 
-        total++;
-
-        if (!circuit(tree.get(root).left, depth + 1)){
-            duplicated = depth;
-            total--;
+        // 만약 왼쪽 노드가 존재하지 않는다면
+        if (tree[root].left == -1){
+            duplicated = depth; // 현재 노드가 마지막 노드일 수도 있으므로 duplicated를 갱신
         }
         else {
-            total++;
+            total = total + 2;
+            circuit(tree[root].left, depth + 1);
         }
 
-        total++;
-
-        if (!circuit(tree.get(root).right, depth + 1)){
+        // 만약 오른쪽 노드가 존재하지 않는다면
+        if (tree[root].right == -1){
             duplicated = depth;
-            total--;
         }
         else {
-            total++;
+            total = total + 2;
+            circuit(tree[root].right, depth + 1);
         }
-
-        return true;
     }
 }
