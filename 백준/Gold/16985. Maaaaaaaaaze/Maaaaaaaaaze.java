@@ -8,7 +8,6 @@ public class Main {
 
     static final int SIZE = 5;
     static final int DIR = 4;
-    static final int EDGE = 8;
 
     static int[][][][] boards;
     static int[] selectedLevel;
@@ -76,7 +75,7 @@ public class Main {
                 int dir = selectedDir[level];
                 maze[i] = boards[dir][level];
             }
-            
+
             // 시작점, 끝점이 막혀있는 경우
             if (maze[start[0]][start[1]][start[2]] == 0 || maze[end[0]][end[1]][end[2]] == 0){
                 return;
@@ -113,9 +112,6 @@ public class Main {
 
         while (!q.isEmpty()) {
             int[] cur = q.poll();
-            if (cur[3] > min){
-                return;
-            }
             if (cur[0] == end[0] && cur[1] == end[1] && cur[2] == end[2]) {
                 min = Math.min(min, cur[3]);
                 return;
