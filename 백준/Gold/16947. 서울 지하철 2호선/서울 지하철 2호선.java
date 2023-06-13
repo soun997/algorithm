@@ -9,7 +9,8 @@ public class Main {
     static int[] parents;
     static boolean[] visited;
     static boolean[] isCycle;
-    static boolean cycleChecked;
+    static Queue<int[]> q;
+    static int[] distance;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,7 +21,8 @@ public class Main {
         parents = new int[N + 1];
         visited = new boolean[N + 1];
         isCycle = new boolean[N + 1];
-        cycleChecked = false;
+        q = new ArrayDeque<>();
+        distance = new int[N + 1];
 
         for (int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
@@ -35,28 +37,21 @@ public class Main {
         }
 
         findCircularLine(0, 1);
+        getDistance();
 
         for (int i = 1; i <= N; i++) {
-            if (isCycle[i]){
-                result.append(0).append(" ");
-                continue;
-            }
-            result.append(getDistance(i)).append(" ");
+            result.append(distance[i]).append(" ");
         }
 
         System.out.println(result);
     }
 
     static void findCircularLine(int prev, int cur){
-        if (cycleChecked){
-            return;
-        }
 
         if (visited[cur]){
             if (!isCycle[cur]){
                 parents[cur] = prev;
                 findCycle(cur);
-                cycleChecked = true;
             }
             return;
         }
@@ -70,15 +65,13 @@ public class Main {
                 continue;
             }
             findCircularLine(cur, next);
-            if (cycleChecked){
-                return;
-            }
         }
     }
 
     static void findCycle(int cur){
 
         if (isCycle[cur]){
+            q.offer(new int[]{cur, 0});
             return;
         }
 
@@ -86,24 +79,24 @@ public class Main {
         findCycle(parents[cur]);
     }
 
-    static int getDistance(int start){
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{start, 0});
-        visited = new boolean[N + 1];
+    static void getDistance(){
+        boolean[] visited = new boolean[N + 1];
 
         while (!q.isEmpty()) {
             int[] cur = q.poll();
-            if (isCycle[cur[0]]){
-                return cur[1];
-            }
+
             for (int next : graph[cur[0]]) {
                 if (visited[next]){
                     continue;
                 }
                 visited[next] = true;
-                q.offer(new int[]{next, cur[1] + 1});
+                if (isCycle[next]){
+                    q.offer(new int[]{next, 0});
+                } else {
+                    distance[next] = cur[1] + 1;
+                    q.offer(new int[]{next, cur[1] + 1});
+                }
             }
         }
-        return -1;
     }
 }
