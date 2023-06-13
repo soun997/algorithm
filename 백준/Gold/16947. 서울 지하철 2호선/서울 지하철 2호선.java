@@ -11,6 +11,7 @@ public class Main {
     static boolean[] isCycle;
     static Queue<int[]> q;
     static int[] distance;
+    static boolean isDone;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,11 +48,15 @@ public class Main {
     }
 
     static void findCircularLine(int prev, int cur){
+        if (isDone){
+            return;
+        }
 
         if (visited[cur]){
             if (!isCycle[cur]){
                 parents[cur] = prev;
                 findCycle(cur);
+                isDone = true;
             }
             return;
         }
