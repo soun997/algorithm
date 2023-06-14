@@ -15,36 +15,38 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         wires = new int[K];
 
+        long max = 0; // 최댓값을 long으로 설정하여 오버플로우 방지
+
         for (int i = 0; i < K; i++) {
             wires[i] = Integer.parseInt(br.readLine());
+            max = Math.max(max, wires[i]);
         }
 
-        System.out.println(binarySearch(0, Integer.MAX_VALUE));
+        System.out.println(binarySearch(1, max));
     }
 
-    static int binarySearch(int left, int right){
+    static long binarySearch(long left, long right) {
+        long result = 0;
 
-        while(left < right){
-            int mid = left + (right - left) / 2 + 1;    // mid 길이로 랜선을 자를 때, N개를 만들 수 있는지?
+        while (left <= right) {
+            long mid = (left + right) / 2; // mid 길이로 랜선을 자를 때, N개를 만들 수 있는지?
 
-            // 만들 수 있다면 -> 해당 mid가 최댓값이 아닐 수도 있으므로 계속 탐색
-            if (isPossible(mid)){
-                left = mid;
-                continue;
+            if (isPossible(mid)) {
+                result = mid; // 가능한 경우에 mid를 저장해둠
+                left = mid + 1; // 탐색 범위를 오른쪽으로 좁힘
+            } else {
+                right = mid - 1; // 탐색 범위를 왼쪽으로 좁힘
             }
-
-            // 만들 수 없다면 -> 길이를 더 줄여야 함
-            right = mid - 1;
         }
 
-        return left;
+        return result;
     }
 
-    // 해당 길이로 자를 경우, N개의 랜선을 만들 수 있는 지
-    static boolean isPossible(int length){
-        int count = 0;
+    static boolean isPossible(long length) {
+        long count = 0;
+
         for (int wire : wires) {
-            count = count + wire / length;
+            count += wire / length;
         }
 
         return count >= N;
