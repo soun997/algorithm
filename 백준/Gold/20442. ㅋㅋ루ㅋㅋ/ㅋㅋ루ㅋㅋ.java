@@ -1,49 +1,56 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        char[] kukuru = br.readLine().toCharArray();
+        String input = br.readLine();
+        char[] kukuru = new char[input.length()];
 
-        List<Integer> leftCount = new ArrayList<>();
-        List<Integer> rightCount = new ArrayList<>();
+        int rCount = 0;
+        for (int i = 0; i < input.length(); i++) {
+            kukuru[i] = input.charAt(i);
+            if (kukuru[i] == 'R'){
+                rCount++;
+            }
+        }
 
-        int count = 0;
+        int[] leftCount = new int[rCount];
+        int[] rightCount = new int[rCount];
+
+        int idx = 0;
+        int kCount = 0;
         for (int i = 0; i < kukuru.length; i++) {
             if (kukuru[i] == 'K') {
-                count++;
+                kCount++;
                 continue;
             }
-            leftCount.add(count);
+            leftCount[idx++] = kCount;
         }
 
-        count = 0;
+        idx = rCount - 1;
+        kCount = 0;
         for (int i = kukuru.length - 1; i >= 0; i--) {
             if (kukuru[i] == 'K') {
-                count++;
+                kCount++;
                 continue;
             }
-            rightCount.add(count);
+            rightCount[idx--] = kCount;
         }
-        Collections.reverse(rightCount);
 
         int sum = 0;
         int left = 0;
-        int right = rightCount.size() - 1;
+        int right = rightCount.length - 1;
         while (left <= right) {
 
             sum = Math.max(sum,
                     (right - left + 1) +
-                            Math.min(leftCount.get(left), rightCount.get(right)) * 2
+                            Math.min(leftCount[left], rightCount[right]) * 2
             );
 
-            if (leftCount.get(left) < rightCount.get(right)){
+            if (leftCount[left] < rightCount[right]){
                 left++;
             } else {
                 right--;
