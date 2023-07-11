@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -59,18 +57,14 @@ public class Main {
         if (cnt == mul) {
             int result = 1;
             int sum = operand[0];
-            List<Integer> list = new ArrayList<>();
             for (int i = 1; i < N; i++) {
                 // 곱셈일 경우
                 if (operator[i - 1]) {
-                    list.add(sum);
+                    result = result * sum;
                     sum = operand[i];
                     continue;
                 }
                 sum = sum + operand[i];
-            }
-            for (int num : list) {
-                result = result * num;
             }
             result = result * sum;
             max = Math.max(max, result);
