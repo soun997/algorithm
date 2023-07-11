@@ -46,19 +46,15 @@ public class Main {
 
         for (int i = 1; i < N; i++) {
             for (int j = 1; j < N; j++) {
-                int up = 0;
-                int left = 0;
+                int up = dp[i - 1][j] + 1;
+                int left = dp[i][j - 1] + 1;
                 int prevUp = (milkCity[i - 1][j] + 1) % 3;
                 int prevLeft = (milkCity[i][j - 1] + 1) % 3;
-                if (milkCity[i][j] == prevUp) {
-                    up = dp[i - 1][j] + 1;
-                } else {
+                if (milkCity[i][j] != prevUp) {
                     up = dp[i - 1][j];
                     prevUp = milkCity[i - 1][j];
                 }
-                if (milkCity[i][j] == prevLeft) {
-                    left = dp[i][j - 1] + 1;
-                } else {
+                if (milkCity[i][j] != prevLeft) {
                     left = dp[i][j - 1];
                     prevLeft = milkCity[i][j - 1];
                 }
