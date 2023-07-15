@@ -6,11 +6,16 @@ class Solution {
     Queue<Long> q2 = new ArrayDeque<>();
     long sumQ1;
     long sumQ2;
+    int limit;
     
     
     public int solution(int[] queue1, int[] queue2) {
         
         init(queue1, queue2);
+        
+        if ((sumQ1 + sumQ2) % 2 == 1) {
+            return -1;
+        }
         
         return makeEqual();
     }
@@ -33,6 +38,7 @@ class Solution {
         int count = 0;
         
         while(!q1.isEmpty() && !q2.isEmpty()) {
+            
             if (count > 300000) {
                 break;
             }
@@ -59,12 +65,5 @@ class Solution {
         }
         
         return -1;
-    }
-    
-    void printQueue(Queue<Long> q) {
-        for (Long num : q) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
     }
 }
