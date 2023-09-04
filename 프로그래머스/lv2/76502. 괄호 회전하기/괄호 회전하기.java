@@ -41,7 +41,6 @@ class Solution {
             }
             stk.push(bracket);
         }
-        
         return stk.isEmpty();
     }
 }
