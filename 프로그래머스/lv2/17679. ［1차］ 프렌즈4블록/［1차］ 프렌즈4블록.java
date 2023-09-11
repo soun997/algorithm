@@ -21,6 +21,9 @@ class Solution {
         boolean isPopped = false;
         for (int i = 0; i < m - 1; i++) {
             for (int j = 0; j < n - 1; j++) {
+                if (board[i][j] == ' '){
+                    continue;
+                }
                 if (isSame(i, j)) {
                     board[i][j] = Character.toLowerCase(board[i][j]);
                     board[i + 1][j] = Character.toLowerCase(board[i + 1][j]);
@@ -34,9 +37,6 @@ class Solution {
     }
     
     public boolean isSame(int x, int y) {
-        if (board[x][y] == ' ') {
-            return false;
-        }
         char a = Character.toUpperCase(board[x][y]);
         char b = Character.toUpperCase(board[x + 1][y]);
         char c = Character.toUpperCase(board[x][y + 1]);
