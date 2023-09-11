@@ -11,6 +11,7 @@ class Solution {
         }
         int min = Integer.MAX_VALUE;
         for (int i = k - 1; i < stones.length; i++) {
+            q.offer(new int[]{-1 * stones[i], i});
             while (!q.isEmpty()) {
                 int[] cur = q.peek();
                 if (cur[1] >= i - k + 1) {
@@ -18,7 +19,6 @@ class Solution {
                 }
                 q.poll();
             }
-            q.offer(new int[]{-1 * stones[i], i});
             min = Math.min(min, -1 * q.peek()[0]);
         }
         return min;
