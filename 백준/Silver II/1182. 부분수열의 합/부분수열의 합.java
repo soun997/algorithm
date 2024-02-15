@@ -24,34 +24,32 @@ public class Main {
             numbers[i] = Integer.parseInt(st.nextToken());
         }
 
-        powerSet(0, 0);
+        powerSet(0);
         System.out.println(total);
     }
 
-    static void powerSet(int cnt, int idx) {
+    static void powerSet(int idx) {
         if (idx == N) {
-            return;
-        }
-        for (int i = idx; i < N; i++) {
-            if (visited[i]) {
-                continue;
-            }
-            visited[i] = true;
             if (isPossible()) {
                 total++;
             }
-            powerSet(cnt + 1, i + 1);
-            visited[i] = false;
+            return;
         }
+        visited[idx] = false;
+        powerSet(idx + 1);
+        visited[idx] = true;
+        powerSet(idx + 1);
     }
 
     static boolean isPossible() {
         int sum = 0;
+        boolean isEmptySet = true;
         for (int i = 0; i < N; i++) {
             if (visited[i]) {
                 sum += numbers[i];
+                isEmptySet = false;
             }
         }
-        return (sum == S);
+        return (sum == S) && !isEmptySet;
     }
 }
