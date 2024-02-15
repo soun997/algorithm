@@ -3,43 +3,42 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    static int n;
-    static int[] chessBoard;
-    static int count;
+    static int N;
+    static boolean[] visitedCol = new boolean[15];    // 배열의 idx는 행 번호, 배열의 원소값은 열 번호
+    static boolean[] visitedDiag1 = new boolean[30];
+    static boolean[] visitedDiag2 = new boolean[30];
+    static int total = 0;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Integer.parseInt(br.readLine());
-        chessBoard = new int[n];
-        count = 0;
+        N = Integer.parseInt(br.readLine());
 
-        nQueen(0);
-
-        System.out.println(count);
+        putQueen(0);
+        System.out.println(total);
     }
 
-    static void nQueen(int idx){
+    static void putQueen(int row) {
 
-        if (idx == n){
-            count++;
+        if (row == N) {
+            total++;
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            chessBoard[idx] = i;
-
-            if (validate(idx))
-                nQueen(idx + 1);
+        for (int col = 0; col < N; col++) {
+            // 놓을 수 있는 위치라면
+            if (visitedCol[col] ||
+                    visitedDiag1[row + col] ||
+                    visitedDiag2[row - col + N - 1]) {
+                continue;
+            }
+            visitedCol[col] = true;
+            visitedDiag1[row + col] = true;
+            visitedDiag2[row - col + N - 1] = true;
+            putQueen(row + 1);
+            visitedCol[col] = false;
+            visitedDiag1[row + col] = false;
+            visitedDiag2[row - col + N - 1] = false;
         }
-    }
-
-    static boolean validate(int idx){
-
-        for (int i = 0; i < idx; i++) {
-            if (chessBoard[idx] == chessBoard[i] || idx - i == Math.abs(chessBoard[idx] - chessBoard[i]))
-                return false;
-        }
-        return true;
     }
 }
