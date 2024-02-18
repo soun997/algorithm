@@ -11,9 +11,8 @@ public class Main {
 
     static int N;
     static int[] S = new int[21];
-    static boolean[] visited = new boolean[21];
     static int max = 0;
-    static Set<Integer> possibles = new HashSet<>();
+    static boolean[] possibles;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,8 +20,10 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             S[i] = Integer.parseInt(st.nextToken());
+            max += S[i];
         }
 
+        possibles = new boolean[max + 1];
         powerSet(0, 0);
 //        System.out.println(possibles);
         System.out.println(findMissing());
@@ -32,20 +33,18 @@ public class Main {
 
         if (idx == N) {
             //System.out.println(sum);
-            max = Math.max(max, sum);
-            possibles.add(sum);
+            possibles[sum] = true;
             return;
         }
-        visited[idx] = true;
+
         powerSet(idx + 1, sum + S[idx]);
-        visited[idx] = false;
         powerSet(idx + 1, sum);
     }
 
     static int findMissing() {
 
         for (int i = 1; i <= max; i++) {
-            if (!possibles.contains(i)) {
+            if (!possibles[i]) {
                 return i;
             }
         }
