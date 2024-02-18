@@ -9,7 +9,7 @@ public class Main {
     static Ingredient[] ingredients;
     static boolean[] visited;
     static int minPrice = Integer.MAX_VALUE;
-    static StringBuilder minVisited = new StringBuilder();
+    static String minVisited = "";
 
     static class Ingredient {
 
@@ -82,10 +82,11 @@ public class Main {
 
         if (idx == N) {
             if (isPossible(total)) {
-                StringBuilder curVisited = new StringBuilder();
+                String curVisited = "";
                 for (int i = 0; i < N; i++) {
                     if (visited[i]) {
-                        curVisited.append(i + 1).append(" ");
+                        curVisited += (i + 1);
+                        curVisited += " ";
                     }
                 }
 //                System.out.println(curVisited);
