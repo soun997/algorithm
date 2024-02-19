@@ -24,14 +24,13 @@ public class Main {
 
     static void backtracking(int cnt) {
 
-        if (!checkDuplication(cnt)) {
-            return;
-        }
         if (cnt == N) {
 
-            if (isPass()) {
-                //System.out.println(Arrays.toString(choices));
-                total++;
+            if (checkDuplication()) {
+                if (isPass()) {
+                    //System.out.println(Arrays.toString(choices));
+                    total++;
+                }
             }
             return;
         }
@@ -42,11 +41,12 @@ public class Main {
         }
     }
 
-    static boolean checkDuplication(int cnt) {
+    static boolean checkDuplication() {
 
         int duplicated = 1;
         int prev = choices[0];
-        for (int i = 1; i < cnt; i++) {
+        for (int i = 1; i < 10; i++) {
+
             if (choices[i] == prev) {
                 duplicated++;
                 if (duplicated >= 3) {
