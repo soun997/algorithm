@@ -64,6 +64,9 @@ public class Main {
         int totalPrice = 0;
         for (int idx : orders) {
             totalPrice += copiedPrices[idx];
+            if (totalPrice >= min) {
+                return totalPrice;
+            }
             for (int i = 0; i < discounts[idx].length; i++) {
                 if (copiedPrices[discounts[idx][i][0]] - discounts[idx][i][1] < 1) {
                     copiedPrices[discounts[idx][i][0]] = 1;
