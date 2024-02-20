@@ -10,7 +10,7 @@ public class Main {
     // x번 물약을 사면 y번째 물약이 원소만큼 할인된다.
     static boolean[] visited;
     static int[] orders;
-    static int[][] discounts;
+    static int[][][] discounts;
     static int min = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws Exception {
@@ -23,13 +23,14 @@ public class Main {
         for (int i = 1; i <= N; i++) {
             prices[i] = Integer.parseInt(st.nextToken());
         }
-        discounts = new int[N + 1][N + 1];
+        discounts = new int[N + 1][][];
         for (int i = 1; i <= N; i++) {
             int p = Integer.parseInt(br.readLine());
+            discounts[i] = new int[p][2];
             for (int j = 0; j < p; j++) {
                 st = new StringTokenizer(br.readLine());
-                int idx = Integer.parseInt(st.nextToken());
-                discounts[i][idx] = Integer.parseInt(st.nextToken());
+                discounts[i][j][0] = Integer.parseInt(st.nextToken());
+                discounts[i][j][1] = Integer.parseInt(st.nextToken());
             }
         }
         permutation(0);
@@ -61,18 +62,16 @@ public class Main {
             copiedPrices[i] = prices[i];
         }
         int totalPrice = 0;
-
         for (int idx : orders) {
             totalPrice += copiedPrices[idx];
-            for (int i = 1; i <= N; i++) {
-                if (copiedPrices[i] - discounts[idx][i] < 1) {
-                    copiedPrices[i] = 1;
+            for (int i = 0; i < discounts[idx].length; i++) {
+                if (copiedPrices[discounts[idx][i][0]] - discounts[idx][i][1] < 1) {
+                    copiedPrices[discounts[idx][i][0]] = 1;
                     continue;
                 }
-                copiedPrices[i] -= discounts[idx][i];
+                copiedPrices[discounts[idx][i][0]] -= discounts[idx][i][1];
             }
         }
-
         return totalPrice;
     }
 }
