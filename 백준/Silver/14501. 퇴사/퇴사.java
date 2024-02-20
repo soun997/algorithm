@@ -5,51 +5,32 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int N;
-    static Counsel[] counsels;
-    static int[] dp;
-    static int max;
+    static int[][] counseling;
+    static int max = Integer.MIN_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
-        counsels = new Counsel[N + 1];
-        dp = new int[N + 1];
-
-        for (int i = 1; i <= N; i++) {
+        counseling = new int[N][2];
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int time = Integer.parseInt(st.nextToken());
-            int profit = Integer.parseInt(st.nextToken());
-            counsels[i] = new Counsel(time, profit);
+            counseling[i][0] = Integer.parseInt(st.nextToken());
+            counseling[i][1] = Integer.parseInt(st.nextToken());
         }
-
-        dfs(1, 0);
-
+        backtracking(0, 0);
         System.out.println(max);
     }
 
-    static void dfs(int day, int sumOfProfit){
-        if (day > N) {
-            max = Math.max(max, sumOfProfit);
+    static void backtracking(int cnt, int profit) {
+
+        if (cnt == N) {
+            max = Math.max(max, profit);
             return;
         }
 
-        // 해당 일의 상담을 선택한 경우
-        if (day + counsels[day].time <= N + 1){
-            dfs(day + counsels[day].time, sumOfProfit + counsels[day].profit);
+        if (cnt + counseling[cnt][0] <= N) {
+            backtracking(cnt + counseling[cnt][0], profit + counseling[cnt][1]);
         }
-        // 해당 일의 상담을 선택하지 않은 경우
-        dfs(day + 1, sumOfProfit);
-    }
-
-    static class Counsel {
-
-        int time;
-        int profit;
-
-        public Counsel(int time, int profit){
-            this.time = time;
-            this.profit = profit;
-        }
+        backtracking(cnt + 1, profit);
     }
 }
