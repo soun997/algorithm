@@ -33,14 +33,18 @@ public class Main {
                 discounts[i][j][1] = Integer.parseInt(st.nextToken());
             }
         }
-        permutation(0);
+        permutation(0, 0);
         System.out.println(min);
     }
 
-    static void permutation(int cnt) {
+    static void permutation(int cnt, int total) {
+
+        if (total > min) {
+            return;
+        }
 
         if (cnt == N) {
-            min = Math.min(min, getDiscountedPrice());
+            min = total;
             return;
         }
 
@@ -49,32 +53,18 @@ public class Main {
                 continue;
             }
             visited[i] = true;
-            orders[cnt] = i;
-            permutation(cnt + 1);
+            for (int j = 0; j < discounts[i].length; j++) {
+                prices[discounts[i][j][0]] -= discounts[i][j][1];
+            }
+            if (prices[i] < 1) {
+                permutation(cnt + 1, total + 1);
+            } else {
+                permutation(cnt + 1, total + prices[i]);
+            }
+            for (int j = 0; j < discounts[i].length; j++) {
+                prices[discounts[i][j][0]] += discounts[i][j][1];
+            }
             visited[i] = false;
         }
-    }
-
-    static int getDiscountedPrice() {
-
-        int[] copiedPrices = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            copiedPrices[i] = prices[i];
-        }
-        int totalPrice = 0;
-        for (int idx : orders) {
-            totalPrice += copiedPrices[idx];
-            if (totalPrice >= min) {
-                return totalPrice;
-            }
-            for (int i = 0; i < discounts[idx].length; i++) {
-                if (copiedPrices[discounts[idx][i][0]] - discounts[idx][i][1] < 1) {
-                    copiedPrices[discounts[idx][i][0]] = 1;
-                    continue;
-                }
-                copiedPrices[discounts[idx][i][0]] -= discounts[idx][i][1];
-            }
-        }
-        return totalPrice;
     }
 }
