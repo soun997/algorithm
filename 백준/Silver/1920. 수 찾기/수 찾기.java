@@ -4,52 +4,26 @@ import java.util.*;
 
 public class Main {
 
-    static int N;
-    static int[] nArr;
-    static int M;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
+        Set<Integer> nSet = new HashSet<>();
 
-        N = Integer.parseInt(br.readLine());
-        nArr = new int[N];
+        int N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            nArr[i] = Integer.parseInt(st.nextToken());
+            nSet.add(Integer.parseInt(st.nextToken()));
         }
-        Arrays.sort(nArr);
-
-        M = Integer.parseInt(br.readLine());
+        int M = Integer.parseInt(br.readLine());
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
-            sb.append(binarySearch(Integer.parseInt(st.nextToken()))).append("\n");
+            if (nSet.contains(Integer.parseInt(st.nextToken()))) {
+                sb.append(1).append("\n");
+                continue;
+            }
+            sb.append(0).append("\n");
         }
 
         System.out.println(sb);
-    }
-
-    static int binarySearch(int target){
-
-        int start = 0;
-        int end = N - 1;
-
-        while (start <= end){
-            int mid = (start + end) / 2;
-
-            if (nArr[mid] == target){
-                return 1;
-            }
-
-            if (nArr[mid] < target){
-                start = mid + 1;
-            }
-
-            if (nArr[mid] > target){
-                end = mid - 1;
-            }
-        }
-
-        return 0;
     }
 }
