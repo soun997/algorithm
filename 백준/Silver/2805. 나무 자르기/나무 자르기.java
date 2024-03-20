@@ -22,7 +22,7 @@ public class Main {
 
         int start = 0;
         int end = 1_000_000_000;
-        while(start <= end) {
+        while(start < end) {
             int mid = (start + end) / 2;
 
             long total = 0;
@@ -31,12 +31,11 @@ public class Main {
                 total += diff;
             }
             if (total >= M) {
-                max = Math.max(max, mid);
                 start = mid + 1;
                 continue;
             }
-            end = mid - 1;
+            end = mid;
         }
-        System.out.println(max);
+        System.out.println(end - 1);
     }
 }
