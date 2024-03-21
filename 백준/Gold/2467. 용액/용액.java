@@ -23,7 +23,7 @@ public class Main {
         while(start < end) {
 
             int sum = solutions[start] + solutions[end];
-            if (answerDiff >= Math.abs(sum)) {
+            if (answerDiff > Math.abs(sum)) {
                 answerDiff = Math.abs(sum);
                 answer[0] = solutions[start];
                 answer[1] = solutions[end];
