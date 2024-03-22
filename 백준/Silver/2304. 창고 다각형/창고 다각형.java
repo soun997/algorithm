@@ -56,26 +56,4 @@ public class Main {
 
         min += (p2 - p1) * maxHeight;
     }
-
-    static int left() {
-
-        for (int i = 0; i <= 1000; i++) {
-            if(columns[i] == maxHeight) {
-                return i;
-            }
-            min += M[i];
-        }
-        return 0;
-    }
-
-    static int right() {
-
-        for (int i = 1000; i >= 0; i--) {
-            if (columns[i] == maxHeight) {
-                return i + 1;
-            }
-            min += M[i];
-        }
-        return 1000;
-    }
 }
