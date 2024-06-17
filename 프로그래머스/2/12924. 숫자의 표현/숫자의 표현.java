@@ -11,6 +11,7 @@ class Solution {
             }
             if (sum == n) {
                 answer++;
+                lower++;
                 upper++;
             }
             if (sum > n) {
