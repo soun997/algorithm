@@ -4,7 +4,7 @@ class Solution {
     
     public int[] solution(String[] operations) {
         
-        List<Integer> deque = new ArrayList<>();
+        LinkedList<Integer> deque = new LinkedList<>();
 
         for (String operation : operations) {
             String[] splitted = operation.split(" ");
@@ -23,6 +23,7 @@ class Solution {
                     }
                     if (number == 1) {
                         deque.remove(deque.size() - 1);
+                        continue;
                     }
                     if (number == -1) {
                         deque.remove(0);
@@ -33,6 +34,6 @@ class Solution {
         if (deque.isEmpty()) {
             return new int[]{ 0, 0 };
         }
-        return new int[]{ deque.get(deque.size() - 1), deque.get(0) };
+        return new int[]{ deque.getLast(), deque.getFirst() };
     }
 }
