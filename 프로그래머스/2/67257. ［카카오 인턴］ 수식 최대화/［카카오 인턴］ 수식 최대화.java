@@ -24,17 +24,10 @@ class Solution {
         return answer;
     }
     
-    public void perm(int cnt) {
+    private void perm(int cnt) {
         
         if (cnt == 3) {
-            numbers = new ArrayDeque<>();
-            for (int i = 0; i < strNumbers.length; i++) {
-                numbers.offer(Long.parseLong(strNumbers[i]));
-            }
-            operators = new ArrayDeque<>();
-            for (int i = 0; i < strOperations.length; i++) {
-                operators.offer(strOperations[i]);
-            }
+            init();
             answer = Math.max(answer, getResult());
             return;
         }
@@ -48,20 +41,33 @@ class Solution {
             visited[i] = false;
         }
     }
+
+    private void init() {
+      numbers = new ArrayDeque<>();
+      for (int i = 0; i < strNumbers.length; i++) {
+        numbers.offer(Long.parseLong(strNumbers[i]));
+      }
+      operators = new ArrayDeque<>();
+      for (int i = 0; i < strOperations.length; i++) {
+        operators.offer(strOperations[i]);
+      }
+    }
     
-    public long getResult() {
+    private long getResult() {
         for (int i = 0; i < priority.length; i++) {
             ArrayDeque<Long> newNumbers = new ArrayDeque();
-            newNumbers.offer(numbers.poll());
             ArrayDeque<String> newOperators = new ArrayDeque<>();
+            newNumbers.offer(numbers.poll());
             while(!operators.isEmpty()) {
                 String op = operators.poll();
+                // 우선순위에 해당하는 연산자 -> 연산자 앞/뒤의 숫자 계산 후 deque에 추가
                 if (op.equals(priority[i])) {
                     long arg1 = newNumbers.pollLast();
                     long arg2 = numbers.poll();
                     newNumbers.offer(calculate(arg1, arg2, op));
                     continue;
                 }
+                // 우선순위에 해당하는 연산자 -> 연산자 뒤의 숫자 deque에 추가
                 newNumbers.offer(numbers.poll());
                 newOperators.offer(op);
             }
@@ -71,13 +77,13 @@ class Solution {
         return Math.abs(numbers.poll());
     }
     
-    public long calculate(long a, long b, String op) {
+    private long calculate(long a, long b, String op) {
         
         return switch(op) {
             case "+" -> a + b;
             case "-" -> a - b;
             case "*" -> a * b;
-            default -> -1;
+            default -> throw new IllegalArgumentException();
         };
     }
 }
