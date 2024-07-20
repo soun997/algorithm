@@ -6,8 +6,8 @@ public class Solution {
     static final int START = 0;
     static final int END = 99;
 
-    static List<Integer>[] graph = new ArrayList[100];
-    static boolean[] visited = new boolean[100];
+    static int[][] graph;
+    static boolean[] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,17 +17,21 @@ public class Solution {
             int t = Integer.parseInt(st.nextToken());
             int N = Integer.parseInt(st.nextToken());
 
-            graph = new ArrayList[100];
-            visited = new boolean[100];
-            for (int i = 0; i < 100; i++) {
-                graph[i] = new ArrayList<>();
+            graph = new int[100][2];
+            for (int i = 0; i < 100 ; i++) {
+                Arrays.fill(graph[i], -1);
             }
+            visited = new boolean[100];
 
             st = new StringTokenizer(br.readLine());
             for (int i = 0; i < N; i++) {
                 int from = Integer.parseInt(st.nextToken());
                 int to = Integer.parseInt(st.nextToken());
-                graph[from].add(to);
+                if (graph[from][0] == -1) {
+                    graph[from][0] = to;
+                    continue;
+                }
+                graph[from][1] = to;
             }
             int result = (isPossible(START, false) ? 1 : 0);
             sb.append("#").append(t).append(" ").append(result).append("\n");
@@ -41,7 +45,7 @@ public class Solution {
             return true;
         }
         for (int next : graph[cur]) {
-            if (visited[next]) {
+            if (next == -1 || visited[next]) {
                 continue;
             }
             isPossible = isPossible(next, isPossible);
