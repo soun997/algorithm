@@ -47,19 +47,19 @@ class Solution {
     }
     
     private void move(int[] cur, int dir, int delta) {
-        int x = cur[0];
-        int y = cur[1];
+        int tempX = cur[0];
+        int tempY = cur[1];
         for(int i = 0; i < delta; i++) {
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
+            int nx = tempX + dx[dir];
+            int ny = tempY + dy[dir];
             if (isOutOfBounds(nx, ny) || park[nx][ny] == 'X') {
                 return;
             }
-            x = nx;
-            y = ny;
+            tempX = nx;
+            tempY = ny;
         }
-        cur[0] = x;
-        cur[1] = y;
+        cur[0] = tempX;
+        cur[1] = tempY;
     }
     
     private boolean isOutOfBounds(int x, int y) {
