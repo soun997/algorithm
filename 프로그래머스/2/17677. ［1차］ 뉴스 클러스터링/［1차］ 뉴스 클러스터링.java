@@ -38,13 +38,11 @@ class Solution {
             if (!isLetter(part)) {
                 continue;
             }
-            map.computeIfPresent(part, (k,v) -> v + 1);
-            map.putIfAbsent(part, 1);
+            map.merge(part, 1, Integer::sum);
         }
     }
     
     private boolean isLetter(String part) {
-        
         return Character.isAlphabetic(part.charAt(0)) && 
             Character.isAlphabetic(part.charAt(1));
     }
