@@ -3,7 +3,7 @@ import java.util.*;
 class Solution {
     public long solution(int n, int[] works) {
         
-        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(a, b) * -1);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         for (int work : works) {
             pq.offer(work);
         }
