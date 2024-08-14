@@ -22,14 +22,16 @@ class Solution {
             int end = position.get(count - 1);
             
             if (count == 1 || count >= 3) { // rule1
-                if (gapIsNot2(position) || 
-                    isOutOfBounds(sentence, start - 1, end + 1)) {
+                if (gapIsNot2(position) || // rule1 간격 만족 X
+                    isOutOfBounds(sentence, start - 1, end + 1) ||  // 기호가 처음이나 끝에 있는 경우
+                    Character.isLowerCase(sentence.charAt(start - 1)) ||  // 기호가 연속되는 경우
+                    Character.isLowerCase(sentence.charAt(end + 1))) {
                     return "invalid";
                 }
-                if (start > lastStart && end < lastEnd) { // rule2 내부의 rule1
+                if (start > lastStart && end < lastEnd) { // rule2 내부의 rule1 -> 포함되므로 변환 X
                     continue;
                 }
-                if (idx > start - 1) {
+                if (idx > start - 1) {  // 이전 단어와 겹치는 경우
                     return "invalid";
                 }
                 appendAnswer(sentence, idx, start - 1);
@@ -43,14 +45,15 @@ class Solution {
                 if (gap < 2) {
                     return "invalid";   // 기호는 연속 불가
                 }
-                if (start > lastStart && end < lastEnd) { // rule2 내부의 rule1만 가능
-                    if (gapIsNot2(position) ||
-                       start - lastStart != 2 || lastEnd - end != 2) {
+                if (start > lastStart && end < lastEnd) { // rule2 내부의 rule1 -> 포함되므로 변환 X
+                    if (gapIsNot2(position) ||  // rule1 간격 만족 X
+                        Character.isLowerCase(sentence.charAt(start - 1)) ||  // 기호가 연속되는 경우
+                        Character.isLowerCase(sentence.charAt(end + 1))) {  // 
                         return "invalid";
                     }
                     continue;
                 }
-                if (idx > start + 1) {
+                if (idx > start + 1) {  // 이전 단어와 겹치는 경우
                     return "invalid";
                 }
                 appendAnswer(sentence, idx, start + 1);
@@ -60,7 +63,7 @@ class Solution {
                 lastEnd = end;
             }
         }
-        String postfix = sentence.substring(idx, sentence.length());
+        String postfix = sentence.substring(idx, sentence.length());  // 남은 문자열 이어붙이기
         return answer.append(postfix).toString().trim();
     }
     
