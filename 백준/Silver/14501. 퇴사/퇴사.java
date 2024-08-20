@@ -4,33 +4,46 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    static class Reservation {
+        int period;
+        int profit;
+
+        public Reservation(int period, int profit) {
+            this.period = period;
+            this.profit = profit;
+        }
+    }
+
     static int N;
-    static int[][] counseling;
+    static Reservation[] reservations;
     static int max = Integer.MIN_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        counseling = new int[N][2];
-        for (int i = 0; i < N; i++) {
+        reservations = new Reservation[N + 1];
+        for (int i = 1; i <= N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            counseling[i][0] = Integer.parseInt(st.nextToken());
-            counseling[i][1] = Integer.parseInt(st.nextToken());
+            int period = Integer.parseInt(st.nextToken());
+            int profit = Integer.parseInt(st.nextToken());
+            reservations[i] = new Reservation(period, profit);
         }
-        backtracking(0, 0);
+
+        backtracking(1, 0);
+
         System.out.println(max);
     }
 
-    static void backtracking(int cnt, int profit) {
+    static void backtracking(int day, int profit) {
 
-        if (cnt == N) {
+        if (day == N + 1) {
             max = Math.max(max, profit);
             return;
         }
 
-        if (cnt + counseling[cnt][0] <= N) {
-            backtracking(cnt + counseling[cnt][0], profit + counseling[cnt][1]);
+        if (day + reservations[day].period <= N + 1) {  // 해당 일에 상담 진행
+            backtracking(day + reservations[day].period, profit + reservations[day].profit);
         }
-        backtracking(cnt + 1, profit);
+        backtracking(day + 1, profit);  // 해당 일에 상담 진행 X
     }
 }
