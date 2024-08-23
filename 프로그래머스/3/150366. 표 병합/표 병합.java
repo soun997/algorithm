@@ -72,18 +72,15 @@ class Solution {
         int r2 = Integer.parseInt(args[2]);
         int c2 = Integer.parseInt(args[3]);
         
-        if (!(chart[r1][c1].isBlank() || chart[r2][c2].isBlank())) {   // 두 셀 모두 값 가짐
+        if (!(chart[r1][c1].isBlank() || chart[r2][c2].isBlank()) ||
+           !chart[r1][c1].isBlank()) { // 두 셀 모두 값 가지거나, (r1, c1) 셀만 값 가짐
             updateMergedCell(r2, c2, r1, c1);
-        } else if (!chart[r1][c1].isBlank()) {  // (r1, c1) 셀만 값 가짐
-            updateMergedCell(r2, c2, r1, c1);
-        } else if (!chart[r2][c2].isBlank()) {  // (r2, c2) 셀만 값 가짐
-            updateMergedCell(r1, c1, r2, c2);
-        } else {
+        } else {  // (r2, c2) 셀만 값 가지거나, 두 셀 모두 값 가지지 않음
             updateMergedCell(r1, c1, r2, c2);
         }
     }
     
-    // r1, c1에 r2, c2 병합
+    // (r1, c1)에 (r2, c2) 병합
     private void updateMergedCell(int r1, int c1, int r2, int c2) {
         
         int targetCellNum = cells[r1][c1];
