@@ -36,9 +36,9 @@ class Solution {
     private int findGeneratedVertex() {
         for (Map.Entry<Integer, List<Integer>> entry : inputGraph.entrySet()) {
 
-            if (entry.getValue().size() == 0) { // 생성된 정점 -> input 간선 존재 X
-                if (outputGraph.get(entry.getKey()).size() > 1) {
-                    return entry.getKey();
+            if (entry.getValue().size() == 0) { // input 간선 존재 X
+                if (outputGraph.get(entry.getKey()).size() > 1) {   // 외부로 향하는 간선이 2개 이상
+                    return entry.getKey();  // 생성된 정점이구나!
                 }
             }
         }
