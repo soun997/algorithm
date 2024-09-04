@@ -4,8 +4,6 @@ import java.util.StringTokenizer;
 
 public class Solution {
 
-    static int gcd = 1;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
@@ -14,24 +12,23 @@ public class Solution {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int N = Integer.parseInt(st.nextToken());
             int K = Integer.parseInt(st.nextToken());
-            gcd = 1;
-            getGcd(N, K);
-            sb.append('#').append(t).append(' ').append(gcd).append('\n');
+            if (N >= K) {
+                sb.append('#').append(t).append(' ').append(K).append('\n');
+                continue;
+            }
+            sb.append('#').append(t).append(' ').append(getGcd(N, K)).append('\n');
         }
         System.out.println(sb);
     }
 
-    private static void getGcd(int fact, int divisor) {
-        if (divisor == 1) {
-            return;
+    private static int getGcd(int N, int K) {
+        int gcd = 1;
+        for (int i = N; i > 1; i--) {
+           if (K % i == 0) {
+               gcd = gcd * i;
+               K = K / i;
+           }
         }
-        for (int i = fact; i > 1; i--) {
-            if (divisor % i == 0) {
-                gcd *= i;
-                fact = Math.min(divisor, i - 1);
-                getGcd(fact, divisor / i);
-                break;
-            }
-        }
+        return gcd;
     }
 }
