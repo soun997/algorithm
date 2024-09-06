@@ -1,8 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -12,7 +9,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         boolean[] isNotPrime = new boolean[MAX + 1];
-        for (int i = 2; i <= MAX; i++) {
+        for (int i = 2; i <= MAX / 2; i++) {
             if (!isNotPrime[i]) {
                 for (int j = i * 2; j <= MAX; j+=i) {
                     if (!isNotPrime[j]) {
