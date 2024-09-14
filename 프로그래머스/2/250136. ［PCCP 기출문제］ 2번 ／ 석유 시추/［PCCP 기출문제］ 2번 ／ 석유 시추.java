@@ -1,77 +1,88 @@
 import java.util.*;
 
 class Solution {
-    private int[] dx = {-1,1,0,0};
-    private int[] dy = {0,0,-1,1};
-    private List<Group> groups = new ArrayList<>();
-    private int width,height;
-    private boolean[][] visited;
-    private int[][] land;
+    
+    int n, m, total;
+    int[][] land, oils, groups;
+    boolean[][] visited;
+    
+    int[] dx = {-1, 0, 1, 0};
+    int[] dy = {0, -1, 0, 1};
     
     public int solution(int[][] land) {
-        int maxNum = 0;
+        
+        n = land.length;
+        m = land[0].length;
+        
         this.land = land;
-        initGroups(land);
-        int[] answer = new int[land[0].length];
+        oils = new int[n][m];
+        groups = new int[n][m];
+        visited = new boolean[n][m];
         
-        // 모든 석유 덩어리를 확인해서, 시추 가능한 땅의 열에 모두 저장
-        for(int i = 0; i < groups.size(); i++){
-            for(Integer offset : groups.get(i).possibleY){
-                answer[offset] += groups.get(i).count;
-                maxNum = Math.max(maxNum,answer[offset]);
+        fill();
+        
+        int max = 0;
+        for (int i = 0; i < m; i++) {
+            boolean[] drilled = new boolean[total + 1];
+            int sum = 0;
+            for (int j = 0; j < n; j++) {
+                if (drilled[groups[j][i]]) {
+                    continue;
+                }
+                sum += oils[j][i];
+                drilled[groups[j][i]] = true;
             }
+            max = Math.max(max, sum);
         }
-        return maxNum;
+        
+        return max;
     }
     
-    private void initGroups(int[][] land){
-        visited = new boolean[land.length][land[0].length];
-        height = land.length;
-        width = land[0].length;
+    private void fill() {
         
-        for(int i = 0; i < land.length; i++){
-            for(int j = 0; j < land[0].length; j++){
-            	// 석유가 없는 땅이거나, 이미 방문한 땅이면 패스
-                if(visited[i][j] || land[i][j] == 0) continue;
-                groups.add(bfs(i,j));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (visited[i][j] || land[i][j] == 0) {
+                    continue;
+                }
+                bfs(i, j, ++total);
             }
         }
     }
     
-    // 최종적으로 만들어지는 것은 석유 덩어리
-    private Group bfs(int sx, int sy){
-        Queue<List<Integer>> q = new LinkedList<>();
-        Set<Integer> possibleY = new HashSet<>();
-        int count = 1;
-        q.add(List.of(sx,sy));
-        visited[sx][sy] = true;
-        possibleY.add(sy);
-        while(!q.isEmpty()){
-            List<Integer> temp = q.poll();
-            int x = temp.get(0);
-            int y = temp.get(1);
-            for(int i = 0; i < 4; i++){
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if(nx < 0 || ny < 0 || nx >= height || ny >= width
-                  || land[nx][ny] == 0 || visited[nx][ny]) continue;
-                
+    private void bfs(int x, int y, int idx) {
+        
+        List<int[]> positions = new ArrayList<>();
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{ x, y });
+        visited[x][y] = true;
+        
+        while(!q.isEmpty()) {
+            int[] cur = q.poll(); 
+            positions.add(cur);
+            for (int d = 0; d < 4; d++) {
+                int nx = cur[0] + dx[d];
+                int ny = cur[1] + dy[d];
+                if (isOutOfBounds(nx, ny) ||
+                    visited[nx][ny] || 
+                    land[nx][ny] == 0) {
+                    continue;
+                }
+                q.offer(new int[]{ nx, ny });
                 visited[nx][ny] = true;
-                q.add(List.of(nx,ny));
-                count++;
-                possibleY.add(ny);
             }
         }
-        return new Group(possibleY,count);
+        int totalOils = positions.size();
+        for (int[] pos : positions) {
+            oils[pos[0]][pos[1]] = totalOils;
+            groups[pos[0]][pos[1]] = idx;
+        }
     }
     
-    // 석유 덩어리 그룹 클래스를 만듦
-    public class Group{
-        int count;
-        Set<Integer> possibleY;
-        public Group(Set<Integer> possibleY, int count){
-            this.possibleY = possibleY;
-            this.count = count;
+    private boolean isOutOfBounds(int x, int y) {
+        if (x < 0 || x >= n || y < 0 || y >= m) {
+            return true;
         }
+        return false;
     }
 }
