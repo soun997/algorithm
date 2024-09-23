@@ -6,23 +6,23 @@ class Solution {
         if (n <= cores.length) {
             return n;
         }
-        int left = 0;
+        int left = 0;   // 최종적으로 n번째 작업이 시행되는 시간이 들어감
         int right = n * 10000;
         int processed = 0;
         while(left <= right) {
             int mid = (left + right) / 2;
-            int count = calculate(mid, cores);
-            // 처리할 수 있는 작업 개수가 더 많다면
+            int count = calculate(mid, cores);  // 처리할 수 있는 작업 개수
             if (count >= n) {
                 right = mid - 1;
-            } else {    // 아니라면
+            } else {
                 left = mid + 1;
                 processed = count;
             }
         }
         
-        int remain = n - processed;
+        int remain = n - processed; // n번째 작업이 시행되는 시간 -> 그때 처리되는 작업 개수
         for (int i = 0; i < cores.length; i++) {
+            // 해당 시간에 작업하는 코어라면
             if (left % cores[i] == 0) {
                 remain--;
                 if (remain == 0) {
