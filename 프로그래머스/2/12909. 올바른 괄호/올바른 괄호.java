@@ -2,19 +2,19 @@ import java.util.*;
 
 class Solution {
     boolean solution(String input) {
-        Stack<Character> stk = new Stack<>();
+        int count = 0;
         for(char c : input.toCharArray()) {
             if (c == '(') {
-                stk.push(c);
+                count++;
             } else if (c == ')') {
-                if (stk.isEmpty()) {
-                    return false;
-                }
-                stk.pop();
+                count--;
             } else {
                 return false; // 괄호가 아닌 입력
             }
+            if (count < 0) {
+                return false;
+            }
         }
-        return stk.isEmpty();
+        return count == 0;
     }
 }
