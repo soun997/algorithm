@@ -1,30 +1,24 @@
 import java.util.*;
-import java.util.regex.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 class Solution {
-    public List<Integer> solution(String s) {
-        Map<Integer, List<Integer>> parsedSet = new HashMap<>();
-        
-        // 중괄호로 둘러싸인 집합들을 찾는 패턴
-        Pattern pattern = Pattern.compile("\\{([^{}]*)\\}");
+    public int[] solution(String s) {
+
+        Map<String, Integer> map = new HashMap<>();
+        Pattern pattern = Pattern.compile("[0-9]+");
         Matcher matcher = pattern.matcher(s);
-        
-        int max = Integer.MIN_VALUE;
         while (matcher.find()) {
-            String group = matcher.group(1).trim();
-            List<Integer> numbers = new ArrayList<>();
-            for (String number : group.split(",")) {
-                numbers.add(Integer.parseInt(number));
-            }
-            parsedSet.put(numbers.size(), numbers);
-            max = Math.max(max, numbers.size());
+            String n = matcher.group();
+            map.putIfAbsent(n, 0);
+            map.computeIfPresent(n, (k, v) -> v + 1);
         }
-        List<Integer> result = new ArrayList<>();
-        for (int i = 1; i <= max; i++) {
-            parsedSet.get(i).removeAll(result);
-            int number = parsedSet.get(i).get(0);
-            result.add(number);
+        int size = map.size();
+        int[] answer = new int[size];
+        for (String key: map.keySet()) {
+            answer[size - map.get(key)] = Integer.parseInt(key);
         }
-        return result;
+        return answer;
     }
+
 }
