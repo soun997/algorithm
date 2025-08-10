@@ -39,15 +39,20 @@ class Solution {
     }
     
     private void union(int a, int b) {
-        a = find(a);
-        b = find(b);
+        int rootA = find(a);
+        int rootB = find(b);
         
-        if (rank[a] < rank[b]) {
-            int temp = a;
-            a = b;
-            b = temp;
+        if (rootA == rootB) {
+            return;
         }
-        parent[b] = a;
-        rank[a] += rank[b];
+        
+        if (rank[rootA] < rank[rootB]) {
+            parent[rootA] = rootB;
+        } else if (rank[rootA] > rank[rootB]) {
+            parent[rootB] = rootA;
+        } else {
+            parent[rootB] = rootA;
+            rank[rootA]++;
+        }
     }
 }
