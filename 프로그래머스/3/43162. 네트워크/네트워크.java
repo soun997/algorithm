@@ -2,50 +2,52 @@ import java.util.*;
 
 class Solution {
     
-    List<Integer>[] graph;
-    boolean[] visited;
+    private int[] parent;
+    private int[] rank;
     
     public int solution(int n, int[][] computers) {
-        // init graph
-        graph = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            graph[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        makeSet(n);
+        for (int i = 0; i < computers.length; i++) {
+            for (int j = i + 1; j < computers[i].length; j++) {
                 if (computers[i][j] == 1) {
-                    graph[i].add(j);
+                    union(i, j);
                 }
             }
         }
-        // bfs
-        int answer = 0;
-        visited = new boolean[n];
-        for (int i = 0; i < n; i++) {
-            if (visited[i]) {
-                continue;
-            }
-            bfs(i);           
-            answer++;
+        Set<Integer> networks = new HashSet<>();
+        for (int i = 0; i < parent.length; i++) {
+            networks.add(find(i));
         }
-        
-        return answer;
+        return networks.size();
     }
     
-    private void bfs(int start) {
-        Queue<Integer> q = new ArrayDeque<>();
-        q.offer(start);
-        
-        while(!q.isEmpty()) {
-            int cur = q.poll();
-            visited[cur] = true;
-            //System.out.println(cur);
-            for (int next : graph[cur]) {
-                if (visited[next]) {
-                    continue;
-                }
-                q.offer(next);             
-            }
+    private void makeSet(int count) {
+        parent = new int[count];
+        for (int i = 0; i < parent.length; i++) {
+            parent[i] = i;
         }
+        rank = new int[count];
+        Arrays.fill(rank, 1);
+    }
+    
+    private int find(int x) {
+        if (x == parent[x]) {
+            return x;
+        }
+        parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    
+    private void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        
+        if (rank[a] < rank[b]) {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+        parent[b] = a;
+        rank[a] += rank[b];
     }
 }
