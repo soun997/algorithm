@@ -10,11 +10,11 @@ class Solution {
     );
     
     public int solution(String dirs) {
-        int answer = bfs(dirs.toCharArray());
+        int answer = countRoutes(dirs.toCharArray());
         return answer;
     }
     
-    private int bfs(char[] dirs) {
+    private int countRoutes(char[] dirs) {
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[] { 5, 5 });
         boolean[][][][] visited = new boolean[11][11][11][11]; // (x,y) -> (z,w)로 간 적이 있는지?
