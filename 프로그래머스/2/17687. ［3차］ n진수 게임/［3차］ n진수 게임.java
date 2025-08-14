@@ -1,15 +1,22 @@
-import java.util.*;
-
 class Solution {
     public String solution(int n, int t, int m, int p) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <= t * m; i++) {
-            sb.append(Integer.toString(i, n).toUpperCase());
-        }
         StringBuilder answer = new StringBuilder();
-        for (int i = 0; i < t; i++) {
-            answer.append(sb.toString().charAt(p - 1));
-            p = p + m;
+        int num = 0;
+        int pos = 0;
+        
+        while (answer.length() < t) {
+            String converted = Integer.toString(num, n).toUpperCase();
+            
+            for (char c : converted.toCharArray()) {
+                if (pos % m == p - 1) {
+                    answer.append(c);
+                    if (answer.length() == t) {
+                        break;
+                    }
+                }
+                pos++;
+            }
+            num++;
         }
         return answer.toString();
     }
