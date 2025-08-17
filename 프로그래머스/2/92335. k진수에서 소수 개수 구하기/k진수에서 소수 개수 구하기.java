@@ -9,12 +9,6 @@ class Solution {
         String s = "";
         for (int i = 0; i < converted.length(); i++) {
             char c = converted.charAt(i);
-            if (s.isEmpty()) {
-                if (c != '0') {
-                    s += c;
-                }
-                continue;
-            }
             if (c == '0') {
                 if (!s.isBlank() && isPrime(Long.parseLong(s))) {
                     answer++;
