@@ -6,22 +6,12 @@ class Solution {
         int answer = 0;
         String converted = Integer.toString(n, k);
         
-        String s = "";
-        for (int i = 0; i < converted.length(); i++) {
-            char c = converted.charAt(i);
-            if (c == '0') {
-                if (!s.isBlank() && isPrime(Long.parseLong(s))) {
-                    answer++;
-                }
-                s = "";
-                continue;
+        String[] numbers = converted.split("0");
+        for (String number : numbers) {
+            if (!number.isEmpty() && isPrime(Long.parseLong(number))) {
+                answer++;
             }
-            s += c;
         }
-        if (!s.isBlank() && isPrime(Long.parseLong(s))) {
-            answer++;
-        }
-        
         return answer;
     }
     
