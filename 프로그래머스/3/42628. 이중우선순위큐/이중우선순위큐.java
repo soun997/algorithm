@@ -1,39 +1,40 @@
 import java.util.*;
+import java.util.function.*;
 
 class Solution {
     
+    private Map<String, Consumer<Integer>> commands = Map.of(
+        "I", this::insert,
+        "D", this::delete
+    );
+    private List<Integer> pq = new ArrayList<>();
+    
     public int[] solution(String[] operations) {
-        
-        LinkedList<Integer> deque = new LinkedList<>();
-
-        for (String operation : operations) {
-            String[] splitted = operation.split(" ");
-            
-            String command = splitted[0];
-            int number = Integer.parseInt(splitted[1]);
-            
-            switch(command) {
-                case "I" -> {
-                    deque.add(number);
-                    Collections.sort(deque);
-                }
-                case "D" -> {
-                    if (deque.isEmpty()) {
-                        continue;
-                    }
-                    if (number == 1) {
-                        deque.remove(deque.size() - 1);
-                        continue;
-                    }
-                    if (number == -1) {
-                        deque.remove(0);
-                    }
-                }
-            }
+        for (String op : operations) {
+            String[] chunks = op.split(" ");
+            String command = chunks[0];
+            int number = Integer.parseInt(chunks[1]);
+            commands.get(command).accept(number);
         }
-        if (deque.isEmpty()) {
-            return new int[]{ 0, 0 };
+        if (pq.isEmpty()) {
+            return new int[]{0, 0};
         }
-        return new int[]{ deque.getLast(), deque.getFirst() };
+        return new int[]{pq.get(pq.size() - 1), pq.get(0)};
     }
+    
+    private void insert(int number) {
+        pq.add(number);
+        Collections.sort(pq);
+    }
+    
+    private void delete(int option) {
+        if (pq.isEmpty()) {
+            return;
+        }
+        if (option == 1) {
+            pq.remove(pq.size() - 1);
+            return;
+        }
+        pq.remove(0);
+    } 
 }
