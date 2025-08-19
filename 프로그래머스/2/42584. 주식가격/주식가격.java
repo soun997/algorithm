@@ -5,19 +5,17 @@ class Solution {
         Stack<Integer> stk = new Stack<>();
         int[] answer = new int[prices.length];
         for (int i = 0; i < prices.length; i++) {
-            if (stk.isEmpty()) {
+            // 스택이 비어있거나 주가 떨어지지 않음
+            if (stk.isEmpty() || prices[stk.peek()] <= prices[i]) {
                 stk.push(i);
                 continue;
             }
-            if (prices[stk.peek()] <= prices[i]) {
-                stk.push(i);
-            } else {
-                while (!stk.isEmpty() && prices[stk.peek()] > prices[i]) {
-                    int idx = stk.pop();
-                    answer[idx] = i - idx;   
-                }                
-                stk.push(i);
-            }
+            // 주가 떨어짐
+            while (!stk.isEmpty() && prices[stk.peek()] > prices[i]) {
+                int idx = stk.pop();
+                answer[idx] = i - idx;   
+            }                
+            stk.push(i);
         }
         for (int idx: stk) {
             answer[idx] = (prices.length - 1) - idx;
