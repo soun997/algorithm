@@ -23,9 +23,7 @@ class Solution {
                 }
             }
         }
-        if (dict.containsKey(w)) {
-            answer.add(dict.get(w));
-        }
+        answer.add(dict.get(w));
         return answer;
     }
 }
