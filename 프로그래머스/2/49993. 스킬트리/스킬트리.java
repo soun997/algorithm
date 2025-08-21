@@ -5,7 +5,6 @@ class Solution {
             if (isPossible(skill, skillTree)) {
                 answer++;
             }
-            System.out.println();
         }
         return answer;
     }
