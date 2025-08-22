@@ -31,7 +31,6 @@ class Solution {
             String[] chunks = r.split(" ");
             int time = parseTime(chunks[0]);
             int carNum = Integer.parseInt(chunks[1]);
-            String command = chunks[2];
             totalTimes[carNum].add(time);
         }
         return totalTimes;
