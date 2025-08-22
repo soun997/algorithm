@@ -8,11 +8,9 @@ class Solution {
             Arrays.fill(dp[i], -1);
         }
         for (int i = 0; i < puddles.length; i++) {
-            if (puddles[i].length > 0) {
-                int c = puddles[i][0] - 1;
-                int r = puddles[i][1] - 1;
-                dp[r][c] = 0;   
-            }
+            int c = puddles[i][0] - 1;
+            int r = puddles[i][1] - 1;
+            dp[r][c] = 0;   
         }
         dp[0][0] = 1;
         for (int i = 1; i < n; i++) {
