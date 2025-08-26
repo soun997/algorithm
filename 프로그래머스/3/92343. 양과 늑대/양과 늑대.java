@@ -36,7 +36,7 @@ class Solution {
             nextMask |= (1L << child);
         }
         
-        long state = (nextMask << 18) | (sheep << 5) | wolf;
+        long state = nextMask << 10 | sheep << 5 | wolf;
         // 같은 상태라면 탐색할 필요 없음
         if (memo.contains(state)) {
             return;
