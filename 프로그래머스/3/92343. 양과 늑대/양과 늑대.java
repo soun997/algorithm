@@ -4,7 +4,7 @@ class Solution {
     private int[] info;
     private List<Integer>[] graph;
     private int max = 0;
-    private Map<Long, Integer> memo = new HashMap<>();
+    private Set<Long> memo = new HashSet<>();
     
     public int solution(int[] info, int[][] edges) {
         this.info = info;
@@ -38,10 +38,10 @@ class Solution {
         
         long state = (nextMask << 20) | (sheep << 10) | wolf;
         // 같은 상태일 때, 이전에 더 많은 양을 얻은 적이 있었다면 탐색할 필요 없음
-        if (memo.containsKey(state) && memo.get(state) >= sheep) {
+        if (memo.contains(state)) {
             return;
         }
-        memo.put(state, sheep);
+        memo.add(state);
         
         for (int i = 0; i < info.length; i++) {
             // 방문 가능한 노드라면
