@@ -36,8 +36,8 @@ class Solution {
             nextMask |= (1L << child);
         }
         
-        long state = (nextMask << 20) | (sheep << 10) | wolf;
-        // 같은 상태일 때, 이전에 더 많은 양을 얻은 적이 있었다면 탐색할 필요 없음
+        long state = (nextMask << 18) | (sheep << 5) | wolf;
+        // 같은 상태라면 탐색할 필요 없음
         if (memo.contains(state)) {
             return;
         }
