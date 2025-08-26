@@ -4,6 +4,7 @@ class Solution {
     private int[] info;
     private List<Integer>[] graph;
     private int max = 0;
+    private Map<Long, Integer> memo = new HashMap<>();
     
     public int solution(int[] info, int[][] edges) {
         this.info = info;
@@ -14,11 +15,11 @@ class Solution {
         for (int[] edge : edges) {
             graph[edge[0]].add(edge[1]);
         }
-        circuit(0, 0, 0, new ArrayList<>());
+        circuit(0, 0, 0, 1L);
         return max;
     }
     
-    private void circuit(int cur, int sheep, int wolf, List<Integer> nextNodes) {
+    private void circuit(int cur, int sheep, int wolf, long nextMask) {
         if (info[cur] == 0) {
             sheep++;
         } else {
@@ -27,15 +28,26 @@ class Solution {
         if (sheep <= wolf) {
             return;
         }
-        if (nextNodes.size() > 0) {
-            nextNodes.remove(Integer.valueOf(cur));
-        }
         max = Math.max(max, sheep);
-        for (int next : graph[cur]) {
-            nextNodes.add(next);
+        
+        // 현재 노드를 방문 목록에서 제거하고 자식 노드들 추가
+        nextMask &= ~(1L << cur);
+        for (int child : graph[cur]) {
+            nextMask |= (1L << child);
         }
-        for (int next : nextNodes) {
-            circuit(next, sheep, wolf, new ArrayList<>(nextNodes));
-        };
+        
+        long state = (nextMask << 20) | (sheep << 10) | wolf;
+        // 같은 상태일 때, 이전에 더 많은 양을 얻은 적이 있었다면 탐색할 필요 없음
+        if (memo.containsKey(state) && memo.get(state) >= sheep) {
+            return;
+        }
+        memo.put(state, sheep);
+        
+        for (int i = 0; i < info.length; i++) {
+            // 방문 가능한 노드라면
+            if ((nextMask & (1L << i)) != 0) {
+                circuit(i, sheep, wolf, nextMask);
+            }
+        }
     }
 }
