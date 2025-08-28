@@ -39,15 +39,13 @@ class Solution {
         
         @Override
         public int compareTo(File other) {
-            int headDiff = head.compareTo(other.head);
-            if (headDiff == 0) {
-                int numberDiff = Integer.compare(number, other.number);
-                if (numberDiff == 0) {
+            if (head.equals(other.head)) {
+                if (number == other.number) {
                     return Integer.compare(id, other.id);
                 }
-                return numberDiff;
+                return Integer.compare(number, other.number);
             }
-            return headDiff;
+            return head.compareTo(other.head);
         }
         
         public String getOriginName() {
