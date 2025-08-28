@@ -5,24 +5,22 @@ import java.util.stream.*;
 class Solution {
 
     public String[] solution(String[] files) {
-        
         File[] fileArr = new File[files.length];
         for (int i = 0; i < files.length; i++) {
             fileArr[i] = createFile(i, files[i]);
         }
-        Arrays.sort(fileArr);        
-        return Stream.of(fileArr).map(File::getOriginName).toArray(String[]::new);
+        Arrays.sort(fileArr);     
+        return Stream.of(fileArr)
+                    .map(File::getOriginName)
+                    .toArray(String[]::new);
     }
     
     private File createFile(int id, String originName) {
-        Matcher headMatcher = Pattern.compile("([A-Za-z\\-\\.\\s]+)").matcher(originName);
-        headMatcher.find();
-        String head = headMatcher.group();
-                
-        Matcher numberMatcher = Pattern.compile("([0-9]+)").matcher(originName);
-        numberMatcher.find();
-        String number = numberMatcher.group();
-
+        Matcher matcher = Pattern.compile("([A-Za-z\\-\\.\\s]+)([0-9]+)")
+                                .matcher(originName);
+        matcher.find();
+        String head = matcher.group(1);
+        String number = matcher.group(2);
         return new File(id, originName, head, number);
     }
     
