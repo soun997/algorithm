@@ -4,7 +4,7 @@ class Solution {
     public int[] solution(int e, int[] starts) {
         int[] counts = new int[e + 1];
         counts[1] = 1;
-        for (int i = 2; i<= e; i++) {
+        for (int i = 2; i <= e; i++) {
             counts[i] += 2;
         }
         for (int i = 2; i <= e; i++) {
@@ -12,18 +12,15 @@ class Solution {
                 counts[i * j]++;
             }
         }
-        int[] dp = new int[e + 1];
-        int maxNum = Integer.MAX_VALUE;
+        int[] dp = new int[e + 1];  // dp[i] = 최솟값이 i일 때 가장 많이 등장한 수
         int max = -1;
-        for (int k = e; k >= 1; k--) {
-            if (counts[k] >= max && maxNum >= k) {
+        for (int k = e; k >= 1; k--) {  // 거꾸로 탐색
+            // 해당 숫자 등장 횟수가 역대 최댓값보다 더 크거나 같다 -> 갱신
+            if (counts[k] >= max) {
                 dp[k] = k;
-                maxNum = k;
                 max = counts[k];
             } else {
-                if (k + 1 <= e) {
-                    dp[k] = dp[k + 1];   
-                }
+                dp[k] = dp[k + 1];   
             }
         }
         // System.out.println(Arrays.toString(dp));
@@ -31,7 +28,6 @@ class Solution {
         for (int i = 0; i < starts.length; i++) {
             answer[i] = dp[starts[i]];
         }
-        
         return answer;
     }
 }
