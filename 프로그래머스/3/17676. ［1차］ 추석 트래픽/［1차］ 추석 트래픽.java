@@ -20,7 +20,7 @@ class Solution {
         for (int i = 0; i < logs.length; i++) {
             int count = 1;
             for (int j = i + 1; j < logs.length; j++) {
-                if (logs[i][1] + 1000 > logs[j][0]) {
+                if (logs[i][1] + 999 >= logs[j][0]) {
                     count++;
                 }
             }
