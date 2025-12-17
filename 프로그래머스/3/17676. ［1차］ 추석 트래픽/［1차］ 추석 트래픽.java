@@ -30,18 +30,15 @@ class Solution {
     }
     
     private int endTimeToMilli(String str) {
-        String[] chunks1 = str.split("\\.");
-        String[] chunks2 = chunks1[0].split(":");
-        int hour = Integer.parseInt(chunks2[0]) * 3600 * 1000;
-        int minute = Integer.parseInt(chunks2[1]) * 60 * 1000;
-        int second = Integer.parseInt(chunks2[2]) * 1000;
-        int milli = Integer.parseInt(chunks1[1]);
-        return hour + minute + second + milli;
+        String[] chunks = str.split(":");
+        int hour = Integer.parseInt(chunks[0]) * 3600 * 1000;
+        int minute = Integer.parseInt(chunks[1]) * 60 * 1000;
+        int second = (int)(Double.parseDouble(chunks[2]) * 1000);
+        return hour + minute + second;
     }
     
     private int processTimeToMilli(String str) {
         String time = str.replace("s", "");
-        double seconds = Double.parseDouble(time);
-        return (int)(seconds * 1000);
+        return (int)(Double.parseDouble(time) * 1000);
     }
 }
