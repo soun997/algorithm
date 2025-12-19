@@ -37,9 +37,9 @@ class Solution {
             
             for (int left = 0; left < 12; left++) {
                 for (int right = 0; right < 12; right++) {
-                    if (dp[i][left][right] == INF) {  // 이동 불가
-                        continue;
-                    }
+                    // if (dp[i][left][right] == INF) {  // 이동 불가
+                    //     continue;
+                    // }
                     // 왼손으로 누르는 경우
                     if (target != right) {
                         dp[i + 1][target][right] = Math.min(
