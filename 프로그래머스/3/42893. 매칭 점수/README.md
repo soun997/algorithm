@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 80.6 MB, 시간: 27.24 ms
+메모리: 86.6 MB, 시간: 12.70 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 07월 30일 12:34:32
+2026년 01월 15일 23:15:40
 
 ### 문제 설명
 
@@ -67,18 +67,18 @@
 <li>pages는 HTML 형식의 웹페이지가 문자열 형태로 들어있는 배열이고, 길이는 <code>1</code> 이상 <code>20</code> 이하이다.</li>
 <li>한 웹페이지 문자열의 길이는 <code>1</code> 이상 <code>1,500</code> 이하이다.</li>
 <li>웹페이지의 index는 pages 배열의 index와 같으며 0부터 시작한다.</li>
-<li>한 웹페이지의 url은 HTML의  태그 내에 <meta> 태그의 값으로 주어진다.
+<li>한 웹페이지의 url은 HTML의 &lt;head&gt; 태그 내에 &lt;meta&gt; 태그의 값으로 주어진다.
 
 <ul>
 <li>예를들어, 아래와 같은 meta tag가 있으면 이 웹페이지의 url은 <code>https://careers.kakao.com/index</code> 이다.</li>
-<li><code>&lt;meta property="og:url" content="https://careers.kakao.com/index" /&gt;</code></li>
+<li><code><meta property="og:url" content="https://careers.kakao.com/index"></code></li>
 </ul></li>
-<li>한 웹페이지에서 모든 외부 링크는 <code>&lt;a href="https://careers.kakao.com/index"&gt;</code>의 형태를 가진다.
+<li>한 웹페이지에서 모든 외부 링크는 <code><a href="https://careers.kakao.com/index"></a></code><a href="https://careers.kakao.com/index">의 형태를 가진다.
 
-<ul>
-<li><code>&lt;a&gt;</code> 내에 다른 attribute가 주어지는 경우는 없으며 항상 href로 연결할 사이트의 url만 포함된다.</li>
+</a><ul><a href="https://careers.kakao.com/index">
+</a><li><a href="https://careers.kakao.com/index"><code></code></a><code><a></a></code><a> 내에 다른 attribute가 주어지는 경우는 없으며 항상 href로 연결할 사이트의 url만 포함된다.</a></li><a>
 <li>위의 경우에서 해당 웹페이지는 <code>https://careers.kakao.com/index</code> 로 외부링크를 가지고 있다고 볼 수 있다.</li>
-</ul></li>
+</a></ul></li><a>
 <li>모든 url은 <code>https://</code> 로만 시작한다.</li>
 <li>검색어 word는 하나의 영어 단어로만 주어지며 알파벳 소문자와 대문자로만 이루어져 있다.</li>
 <li>word의 길이는 <code>1</code> 이상 <code>12</code> 이하이다.</li>
@@ -99,7 +99,7 @@
 <ul>
 <li>즉, 웹페이지가 세개이고, 각각 매칭점수가 3,1,3 이라면 제일 적은 index 번호인 0을 리턴하면 된다.</li>
 </ul></li>
-</ul>
+</a></ul><a>
 
 <h5>입출력 예 #1</h5>
 
@@ -228,6 +228,6 @@ con%    muzI92apeach&amp;2&lt;a href="https://hashcode.co.kr/tos"&gt;&lt;/a&gt;
 </ul>
 
 <p>따라서 매칭점수가 제일 높은 두번째 웹 페이지의 index인 1을 리턴 하면 된다.</p>
-
+</a>
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
